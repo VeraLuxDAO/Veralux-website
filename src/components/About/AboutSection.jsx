@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import aboutImage from "../../assets/Frame 24430.png";
 import image2 from "../../assets/about-header.png";
 import baseImage from "../../assets/Veralux-base.png";
@@ -14,11 +14,13 @@ const AboutSection = () => {
     >
       <div className="w-full max-w-7xl flex flex-col lg:flex-row items-center gap-6 sm:gap-8 lg:gap-12 overflow-visible">
         {/* Text Section */}
-        <div className="flex-1 text-center lg:text-left flex flex-col justify-center items-center lg:items-start gap-4 sm:gap-6">
+        <div className="flex-1 text-center lg:text-left flex flex-col justify-center items-center lg:items-start gap-4 sm:gap-6 scroll-optimized">
           <img
             src={image2}
             alt=""
             className="mx-auto lg:mx-0 mb-2 sm:mb-3 w-auto h-6 sm:h-8"
+            loading="lazy"
+            decoding="async"
           />
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 font-tactic">
             What is Veralux?
@@ -40,7 +42,7 @@ const AboutSection = () => {
         {/* Image Section */}
         {/* Desktop/Tablet Coin + Base */}
         <div
-          className="hidden sm:block relative overflow-visible flex justify-center flex-col items-center min-h-[400px] sm:min-h-[500px] lg:min-h-[600px] "
+          className="hidden sm:block relative overflow-visible flex justify-center flex-col items-center min-h-[400px] sm:min-h-[500px] lg:min-h-[600px] hardware-accelerated"
           style={{
             display: "flex",
             flexDirection: "column",
@@ -49,16 +51,20 @@ const AboutSection = () => {
           }}
         >
           {/* Base comes FIRST (bottom layer) */}
-          <div className="coin absolute top-[20px] sm:top-[30px] md:top-[40px] lg:top-[50px] flex -translate-x-1/2 pointer-events-none overflow-visible z-10 flex">
+          <div className="coin absolute top-[20px] sm:top-[30px] md:top-[40px] lg:top-[50px] flex -translate-x-1/2 pointer-events-none overflow-visible z-10 flex hardware-accelerated">
             <img
               src={coinImage}
               alt="Coin Front"
               className="coin-face coin-front w-[200px] sm:w-[250px] md:w-[300px] lg:w-[350px] xl:w-[400px]"
+              loading="lazy"
+              decoding="async"
             />
             <img
               src={coinImage}
               alt="Coin Back"
               className="coin-face coin-back w-[200px] sm:w-[250px] md:w-[300px] lg:w-[350px] xl:w-[400px]"
+              loading="lazy"
+              decoding="async"
             />
             <div className="shine-beam" style={{ height: "80%" }}></div>
           </div>
@@ -66,16 +72,17 @@ const AboutSection = () => {
             src={baseImage}
             alt="Base"
             className="w-[300px] sm:w-[350px] md:w-[400px] lg:w-[450px] xl:w-[500px] rounded-xl animate-float relative z-0"
+            loading="lazy"
+            decoding="async"
           />
 
           {/* Coin positioned on top center of base */}
         </div>
 
         {/* Mobile Coin + Base */}
-        
       </div>
     </section>
   );
 };
 
-export default AboutSection;
+export default memo(AboutSection);

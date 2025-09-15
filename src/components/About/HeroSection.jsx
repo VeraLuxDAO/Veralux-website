@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 // import backgroundimage from "../assets/Frame 24233.png";
 import backgroundimage from "../../assets/Frame 24233.png";
 import { motion } from "framer-motion";
@@ -9,14 +9,14 @@ const HeroSection = () => {
   const title =
     "A Community-Driven\nEcosystem, Designed For The\nFuture Of Web3";
 
-  // Animation for each letter
-  const letterAnimation = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i) => ({
+  // Optimized animation for the entire title
+  const titleAnimation = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
       opacity: 1,
       y: 0,
-      transition: { delay: i * 0.05, duration: 0.05 },
-    }),
+      transition: { duration: 0.8, ease: "easeOut" },
+    },
   };
 
   return (
@@ -26,23 +26,23 @@ const HeroSection = () => {
         src={backgroundimage}
         alt="Background"
         className="absolute inset-0 w-full h-full object-cover z-0 mt-80"
+        loading="lazy"
+        decoding="async"
       />
 
-      {/* Letter-by-letter animated heading */}
-      <h1 className="relative z-10 text-4xl md:text-6xl font-bold leading-tight mt-20 font-tactic">
-        {title.split("").map((char, i) => (
-          <motion.span
-            key={i}
-            custom={i}
-            variants={letterAnimation}
-            initial="hidden"
-            animate="visible"
-            className={char === "\n" ? "block" : ""}
-          >
-            {char}
-          </motion.span>
+      {/* Optimized animated heading */}
+      <motion.h1
+        className="relative z-10 text-4xl md:text-6xl font-bold leading-tight mt-20 font-tactic hardware-accelerated"
+        variants={titleAnimation}
+        initial="hidden"
+        animate="visible"
+      >
+        {title.split("\n").map((line, i) => (
+          <div key={i} className="block">
+            {line}
+          </div>
         ))}
-      </h1>
+      </motion.h1>
 
       {/* Subheading */}
       <p className="text-gray-300 max-w-xl text-lg mb-10 relative z-10 mt-6">
@@ -71,4 +71,4 @@ const HeroSection = () => {
   );
 };
 
-export default HeroSection;
+export default memo(HeroSection);

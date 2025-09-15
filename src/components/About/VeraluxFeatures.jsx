@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { motion } from "framer-motion";
 import pad from "../../assets/Pad.png";
 import social from "../../assets/SocialMedia.png";
@@ -43,13 +43,13 @@ const VeraluxFeatures = () => {
   ];
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 40 },
+    hidden: { opacity: 0, y: 20 },
     visible: (i) => ({
       opacity: 1,
       y: 0,
       transition: {
-        delay: i * 0.2,
-        duration: 0.6,
+        delay: i * 0.1,
+        duration: 0.4,
         ease: "easeOut",
       },
     }),
@@ -87,15 +87,15 @@ const VeraluxFeatures = () => {
           return (
             <motion.div
               key={index}
-              className="bg-gray-800/50 backdrop-blur-sm p-4 sm:p-5 md:p-6 lg:p-8 rounded-xl shadow-xl border border-gray-700/50 cursor-pointer overflow-hidden min-h-[180px] sm:min-h-[200px] md:min-h-[220px] lg:min-h-[250px]"
+              className="bg-gray-800/50 backdrop-blur-sm p-4 sm:p-5 md:p-6 lg:p-8 rounded-xl shadow-xl border border-gray-700/50 cursor-pointer overflow-hidden min-h-[180px] sm:min-h-[200px] md:min-h-[220px] lg:min-h-[250px] scroll-optimized hardware-accelerated"
               variants={cardVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
               custom={index}
               whileHover={{
-                scale: 1.02,
-                boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3)",
+                scale: 1.01,
+                transition: { duration: 0.2 },
               }}
             >
               {/* Flex container for proper layout */}
@@ -139,6 +139,8 @@ const VeraluxFeatures = () => {
                     src={feature.icon}
                     alt={feature.title}
                     className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-32 lg:h-32 xl:w-36 xl:h-36 object-contain opacity-90"
+                    loading="lazy"
+                    decoding="async"
                   />
                 </div>
               </div>
@@ -152,4 +154,4 @@ const VeraluxFeatures = () => {
   );
 };
 
-export default VeraluxFeatures;
+export default memo(VeraluxFeatures);

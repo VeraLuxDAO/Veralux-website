@@ -8,22 +8,64 @@
   font-weight: 500;
   font-style: normal;
   font-display: swap;
+  /* Preload for performance */
 }
 
 @font-face {
   font-family: "Tactic Sans thin";
   src: url("/assets/fonts/Tactic.Sans/TacticSans-Thn.otf") format("opentype");
-  font-weight: 500;
+  font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 
+/* Fallback font loading to prevent layout shift */
 body {
-  font-family: "Tactic Sans";
+  font-family: "Tactic Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+/* Performance optimizations */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Use hardware acceleration for animations */
+.hardware-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform;
+}
+
+/* Optimize scroll performance */
+.scroll-optimized {
+  contain: layout style paint;
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px; /* Fallback size for content-visibility */
+}
+
+/* Reduce repaints for frequently changing elements */
+.reduce-repaint {
+  contain: layout style;
+  will-change: auto;
+}
+
+/* Optimize images for performance */
+img {
+  content-visibility: auto;
+  contain-intrinsic-size: 300px 200px;
+}
+
+/* Optimize animations to use only transform and opacity */
+.animate-optimized {
+  will-change: transform, opacity;
+  contain: layout;
 }
 
 /* index.css */
@@ -35,22 +77,24 @@ body {
   perspective: 1000px;
 }
 
-/* Continuous spin animation */
+/* Continuous spin animation - optimized */
 .spin-card {
   transform-style: preserve-3d;
   animation: spin3D 12s linear infinite;
+  will-change: transform;
+  contain: layout;
 }
 
 @keyframes spin3D {
   from {
-    transform: rotateY(0deg);
+    transform: rotateY(0deg) translateZ(0);
   }
   to {
-    transform: rotateY(360deg);
+    transform: rotateY(360deg) translateZ(0);
   }
 }
 
-/* Holographic animated gradient */
+/* Holographic animated gradient - optimized */
 .holographic {
   background: linear-gradient(
     115deg,
@@ -63,6 +107,8 @@ body {
   filter: blur(10px);
   animation: hologramShift 5s linear infinite;
   pointer-events: none;
+  will-change: background-position;
+  contain: layout style;
 }
 
 @keyframes hologramShift {
@@ -88,6 +134,8 @@ body {
   transform-style: preserve-3d;
   animation: spin-thick 2s linear infinite; /* use new spin with thickness */
   border-radius: 50%;
+  will-change: transform;
+  contain: layout;
 }
 
 /* Coin faces */
@@ -123,18 +171,18 @@ body {
   margin-left: -6px;
 }
 
-/* Spin with thickness illusion */
+/* Spin with thickness illusion - optimized */
 @keyframes spin-thick {
   0% {
-    transform: rotateY(0deg) scaleX(1);
+    transform: rotateY(0deg) scaleX(1) translateZ(0);
   }
 
   50% {
-    transform: rotateY(180deg) scaleX(1);
+    transform: rotateY(180deg) scaleX(1) translateZ(0);
   }
 
   100% {
-    transform: rotateY(360deg) scaleX(1);
+    transform: rotateY(360deg) scaleX(1) translateZ(0);
   }
 }
 
@@ -183,15 +231,21 @@ body {
   animation: pulse-beam 3s ease-in-out infinite;
 }
 
-/* subtle pulsing to make it alive */
+/* subtle pulsing to make it alive - optimized */
 @keyframes pulse-beam {
   0%,
   100% {
     opacity: 0.6;
-    transform: translateX(-50%) scaleY(1);
+    transform: translateX(-50%) scaleY(1) translateZ(0);
   }
   50% {
     opacity: 0.9;
-    transform: translateX(-50%) scaleY(1.1);
+    transform: translateX(-50%) scaleY(1.1) translateZ(0);
   }
+}
+
+/* Optimized shine beam */
+.shine-beam {
+  will-change: transform, opacity;
+  contain: layout style;
 }

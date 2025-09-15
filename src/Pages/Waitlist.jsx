@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FaDiscord,
@@ -74,23 +74,23 @@ const Waitlist = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.1 },
+      transition: { staggerChildren: 0.05 },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 10 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5 },
+      transition: { duration: 0.3 },
     },
   };
 
   return (
-    <div className="min-h-screen text-white pt-24 sm:pt-24 pb-12 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-24">
+    <div className="min-h-screen text-white pt-24 sm:pt-24 pb-12 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-24 scroll-optimized">
       <motion.div
-        className="max-w-4xl mx-auto"
+        className="max-w-4xl mx-auto hardware-accelerated"
         initial="hidden"
         animate="visible"
         variants={containerVariants}
@@ -430,4 +430,4 @@ const Waitlist = () => {
   );
 };
 
-export default Waitlist;
+export default memo(Waitlist);

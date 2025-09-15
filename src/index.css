@@ -1,0 +1,197 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Tactic Sans";
+  src: url("/assets/fonts/Tactic.Sans/TacticSans-Reg.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Tactic Sans thin";
+  src: url("/assets/fonts/Tactic.Sans/TacticSans-Thn.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  font-family: "Tactic Sans";
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* index.css */
+body {
+  @apply bg-gradient-to-b from-purple-900 via-blue-900 to-black text-white;
+}
+
+.perspective {
+  perspective: 1000px;
+}
+
+/* Continuous spin animation */
+.spin-card {
+  transform-style: preserve-3d;
+  animation: spin3D 12s linear infinite;
+}
+
+@keyframes spin3D {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+/* Holographic animated gradient */
+.holographic {
+  background: linear-gradient(
+    115deg,
+    rgba(255, 0, 150, 0.3),
+    rgba(0, 229, 255, 0.3),
+    rgba(255, 255, 0, 0.3)
+  );
+  background-size: 400% 400%;
+  mix-blend-mode: screen;
+  filter: blur(10px);
+  animation: hologramShift 5s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes hologramShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+body {
+  font-family: "Instrument Sans", sans-serif;
+}
+
+.coin {
+  position: relative;
+  width: 250px; /* coin size */
+  height: 250px;
+  transform-style: preserve-3d;
+  animation: spin-thick 2s linear infinite; /* use new spin with thickness */
+  border-radius: 50%;
+}
+
+/* Coin faces */
+.coin-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 50%;
+}
+
+/* Front side (image) */
+.coin-front {
+  transform: translateZ(0px);
+}
+
+/* Back side (mirrored & darker) */
+.coin-back {
+  transform: rotateY(180deg) translateZ(0px);
+  filter: brightness(0.8) contrast(1.2);
+}
+
+/* Coin edge — now visible */
+.coin::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: inherit;
+  transform: rotateY(90deg) translateZ(5px);
+  width: 12px; /* thickness */
+  left: 50%;
+  margin-left: -6px;
+}
+
+/* Spin with thickness illusion */
+@keyframes spin-thick {
+  0% {
+    transform: rotateY(0deg) scaleX(1);
+  }
+
+  50% {
+    transform: rotateY(180deg) scaleX(1);
+  }
+
+  100% {
+    transform: rotateY(360deg) scaleX(1);
+  }
+}
+
+/* Shine beam projection */
+.shine-beam {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  background: radial-gradient(
+    ellipse at bottom,
+    rgba(0, 255, 255, 0.35),
+    transparent 70%
+  );
+  filter: blur(14px);
+  pointer-events: none;
+  animation: pulse-beam 3s ease-in-out infinite;
+}
+
+@keyframes pulse-beam {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+.shine-beam {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px; /* beam width */
+  height: 300px; /* beam height */
+  background: radial-gradient(
+    ellipse at bottom,
+    rgba(0, 255, 255, 0.4),
+    transparent 70%
+  );
+  filter: blur(12px);
+  opacity: 0.7;
+  pointer-events: none;
+  animation: pulse-beam 3s ease-in-out infinite;
+}
+
+/* subtle pulsing to make it alive */
+@keyframes pulse-beam {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: translateX(-50%) scaleY(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateX(-50%) scaleY(1.1);
+  }
+}

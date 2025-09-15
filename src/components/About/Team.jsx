@@ -7,6 +7,11 @@ import { FaXTwitter } from "react-icons/fa6";
 import { FiArrowUpRight } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import Team from "../../assets/team.png";
+import {
+  staggerContainer,
+  titleAnimation,
+  defaultViewport,
+} from "../../utils/animations";
 
 const teamMembers = [
   {
@@ -29,20 +34,50 @@ const teamMembers = [
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
+// Enhanced team card variants
+const teamCardVariants = {
+  hidden: {
+    opacity: 0,
+    y: 60,
+    scale: 0.9,
+    rotateY: -15,
+  },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.2 },
+    y: 0,
+    scale: 1,
+    rotateY: 0,
+    transition: {
+      duration: 0.7,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+  hover: {
+    y: -10,
+    scale: 1.05,
+    rotateY: 5,
+    transition: {
+      duration: 0.3,
+      ease: "easeOut",
+    },
   },
 };
 
+// Additional variants for text and buttons
 const cardVariants = {
   hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
     transition: { duration: 0.6, ease: "easeOut" },
+  },
+};
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.2 },
   },
 };
 
@@ -53,14 +88,34 @@ const TeamSection = () => {
       <motion.div
         className="text-center max-w-7xl w-full flex-1"
         initial="hidden"
-        animate="visible"
-        variants={containerVariants}
+        whileInView="visible"
+        viewport={defaultViewport}
+        variants={titleAnimation}
       >
         {/* Heading */}
-        <img src={Team} alt="" className="mb-3 mx-auto w-auto h-6 sm:h-8" />
+        <motion.img
+          src={Team}
+          alt="Team Header"
+          className="mb-3 mx-auto w-auto h-6 sm:h-8"
+          variants={{
+            hidden: { opacity: 0, scale: 0.8 },
+            visible: {
+              opacity: 1,
+              scale: 1,
+              transition: { duration: 0.5 },
+            },
+          }}
+        />
         <motion.h2
-          className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 sm:mb-10 font-tactic"
-          variants={cardVariants}
+          className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 sm:mb-10 font-tactic bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent"
+          variants={{
+            hidden: { opacity: 0, y: 30 },
+            visible: {
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.6, delay: 0.2 },
+            },
+          }}
         >
           Meet The Team
         </motion.h2>
@@ -68,58 +123,102 @@ const TeamSection = () => {
         {/* Team Members */}
         <motion.div
           className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 mb-8 sm:mb-12 max-w-4xl mx-auto"
-          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={defaultViewport}
+          variants={staggerContainer}
         >
           {teamMembers.map((member, index) => (
             <motion.div
               key={index}
-              className="relative w-full aspect-[3/4] max-w-sm mx-auto rounded-lg overflow-hidden shadow-lg cursor-pointer transform hover:scale-105 transition duration-300"
-              variants={cardVariants}
+              className="group relative w-full aspect-[3/4] max-w-sm mx-auto rounded-lg overflow-hidden shadow-lg cursor-pointer hardware-accelerated"
+              variants={teamCardVariants}
+              whileHover="hover"
             >
               {/* Background image */}
-              <img
+              <motion.img
                 src={member.image}
                 alt={`${member.name} - ${member.role}`}
-                className="absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                initial={{ scale: 1.1, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+              />
+
+              {/* Animated glow effect */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-t from-blue-500/20 via-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                initial={{ scale: 0.8 }}
+                whileHover={{ scale: 1 }}
+                transition={{ duration: 0.3 }}
               />
 
               {/* Overlay gradient at bottom for text readability */}
-              <div className="absolute bottom-0 left-0 right-0 h-20 sm:h-24 bg-gradient-to-t from-[#3366FF] via-[#3366FF]/90 via-[40%] to-transparent pointer-events-none" />
+              <div className="absolute bottom-0 left-0 right-0 h-20 sm:h-24 bg-gradient-to-t from-[#3366FF] via-[#3366FF]/90 via-[40%] to-transparent pointer-events-none group-hover:from-[#4DF3FF] transition-colors duration-300" />
 
               {/* Content container */}
-              <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 flex justify-between items-center text-white z-10">
+              <motion.div
+                className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 flex justify-between items-center text-white z-10"
+                initial={{ y: 20, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                viewport={{ once: true }}
+              >
                 {/* Left: Name and role */}
                 <div className="text-left flex-1 min-w-0">
-                  <h3 className="font-semibold text-base sm:text-lg md:text-xl truncate">
+                  <motion.h3
+                    className="font-semibold text-base sm:text-lg md:text-xl truncate group-hover:text-blue-100 transition-colors duration-300"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.2 }}
+                  >
                     {member.name}
-                  </h3>
-                  <p className="text-xs sm:text-sm opacity-80 truncate">
+                  </motion.h3>
+                  <motion.p
+                    className="text-xs sm:text-sm opacity-80 truncate group-hover:opacity-100 group-hover:text-cyan-200 transition-all duration-300"
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ duration: 0.2 }}
+                  >
                     {member.role}
-                  </p>
+                  </motion.p>
                 </div>
 
                 {/* Right: Icons */}
                 <div className="flex space-x-3 sm:space-x-4 text-lg sm:text-xl md:text-2xl opacity-90 hover:opacity-100 flex-shrink-0">
-                  <a
+                  <motion.a
                     href={member.links.twitter}
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`${member.name} Twitter`}
-                    className="hover:text-blue-400"
+                    className="hover:text-blue-400 transition-colors duration-200"
+                    whileHover={{
+                      scale: 1.3,
+                      rotate: 10,
+                      filter: "drop-shadow(0 0 8px rgba(59, 130, 246, 0.8))",
+                    }}
+                    whileTap={{ scale: 0.9 }}
+                    transition={{ duration: 0.2 }}
                   >
                     <FaXTwitter />
-                  </a>
-                  <a
+                  </motion.a>
+                  <motion.a
                     href={member.links.telegram}
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`${member.name} Telegram`}
-                    className="hover:text-blue-400"
+                    className="hover:text-blue-400 transition-colors duration-200"
+                    whileHover={{
+                      scale: 1.3,
+                      rotate: -10,
+                      filter: "drop-shadow(0 0 8px rgba(59, 130, 246, 0.8))",
+                    }}
+                    whileTap={{ scale: 0.9 }}
+                    transition={{ duration: 0.2 }}
                   >
                     <FaTelegramPlane />
-                  </a>
+                  </motion.a>
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
           ))}
         </motion.div>

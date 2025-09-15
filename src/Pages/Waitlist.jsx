@@ -24,6 +24,10 @@ const Waitlist = () => {
     wallet: false,
   });
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [hasFollowedTwitter, setHasFollowedTwitter] = useState(() => {
+    // Check localStorage for previous follow state
+    return localStorage.getItem("veralux_twitter_followed") === "true";
+  });
 
   const handleDiscordClick = () => {
     window.open("https://discord.gg/gWTFWwaVbD", "_blank");
@@ -31,6 +35,9 @@ const Waitlist = () => {
 
   const handleTwitterClick = () => {
     window.open("https://x.com/VeraLux_LUX", "_blank");
+    // Mark that user has clicked to follow and save to localStorage
+    setHasFollowedTwitter(true);
+    localStorage.setItem("veralux_twitter_followed", "true");
   };
 
   const handleInputChange = (field, value) => {
@@ -214,35 +221,88 @@ const Waitlist = () => {
               <div className="flex items-center space-x-4">
                 <FaXTwitter className="text-2xl" />
                 <div>
-                  <h3 className="text-xl font-semibold">Step 2: Follow on X</h3>
+                  <h3 className="text-xl font-semibold">
+                    {!hasFollowedTwitter
+                      ? "Step 2: Follow on X"
+                      : "Step 2: Enter X Username"}
+                  </h3>
                   <p className="text-gray-400">
-                    Follow us on X and enter your username
+                    {!hasFollowedTwitter
+                      ? "Follow us on X first"
+                      : "Enter your X username to continue"}
                   </p>
                 </div>
               </div>
-              <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 sm:items-center">
-                <button
-                  type="button"
-                  onClick={handleTwitterClick}
-                  disabled={!isStepAccessible(2)}
-                  className="bg-black hover:bg-gray-800 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-semibold transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
-                >
-                  Follow on X
-                </button>
-              </div>
+              {isStepAccessible(2) && !hasFollowedTwitter && (
+                <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 sm:items-center">
+                  <button
+                    type="button"
+                    onClick={handleTwitterClick}
+                    className="bg-black hover:bg-gray-800 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-semibold transition-all duration-200 text-sm sm:text-base transform hover:scale-105 shadow-lg"
+                  >
+                    Follow on X
+                  </button>
+                </div>
+              )}
             </div>
-            {isStepAccessible(2) && (
-              <div className="mt-4">
-                <input
-                  type="text"
-                  placeholder="Enter your X username (without @)"
-                  value={formData.twitterUsername}
-                  onChange={(e) =>
-                    handleInputChange("twitterUsername", e.target.value)
-                  }
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:border-blue-500 focus:outline-none transition-colors duration-200"
-                  required
-                />
+
+            {/* Show input field only after following or if already followed */}
+            {isStepAccessible(2) && hasFollowedTwitter && (
+              <motion.div
+                className="mt-4"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+              >
+                <div className="space-y-3">
+                  {/* Confirmation message */}
+                  <motion.div
+                    className="flex items-center justify-between text-sm text-green-400 bg-green-400/10 p-3 rounded-lg border border-green-400/20"
+                    initial={{ scale: 0.95, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.2, delay: 0.1 }}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <FaCheck className="w-4 h-4" />
+                      <span>Great! Now enter your X username to proceed</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setHasFollowedTwitter(false);
+                        localStorage.removeItem("veralux_twitter_followed");
+                      }}
+                      className="text-xs text-gray-400 hover:text-white underline"
+                      title="Reset follow status"
+                    >
+                      Reset
+                    </button>
+                  </motion.div>
+
+                  {/* Username input */}
+                  <input
+                    type="text"
+                    placeholder="Enter your X username (without @)"
+                    value={formData.twitterUsername}
+                    onChange={(e) =>
+                      handleInputChange("twitterUsername", e.target.value)
+                    }
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:border-blue-500 focus:outline-none transition-all duration-200 focus:ring-2 focus:ring-blue-500/20"
+                    required
+                    autoFocus
+                  />
+                </div>
+              </motion.div>
+            )}
+
+            {/* Show hint if step is accessible but not followed yet */}
+            {isStepAccessible(2) && !hasFollowedTwitter && (
+              <div className="mt-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                <p className="text-sm text-blue-300">
+                  <FaXTwitter className="inline w-4 h-4 mr-2" />
+                  Click "Follow on X" to open our profile, then return here to
+                  enter your username
+                </p>
               </div>
             )}
           </motion.div>

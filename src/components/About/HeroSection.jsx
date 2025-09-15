@@ -45,28 +45,51 @@ const HeroSection = () => {
       </motion.h1>
 
       {/* Subheading */}
-      <p className="text-gray-300 max-w-xl text-lg mb-10 relative z-10 mt-6">
+      <motion.p
+        className="text-gray-300 max-w-xl text-lg mb-10 relative z-10 mt-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.8 }}
+      >
         Stake, govern and thrive in a decentralized ecosystem built on trust and
         transparency.
-      </p>
+      </motion.p>
 
       {/* Buttons */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
-        <button
+      <motion.div
+        className="flex flex-col sm:flex-row gap-4 justify-center relative z-10"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 1.0 }}
+      >
+        <motion.button
           onClick={() => navigate("/waitlist")}
-          className="bg-gradient-to-r from-[#3366FF] to-[#4DF3FF] hover:from-[#2952CC] hover:to-[#3DD1E6] transition-all duration-200 px-6 py-3 rounded-lg font-semibold text-base shadow-lg hover:shadow-xl transform hover:scale-105 cursor-pointer w-[224px] h-[48px]"
+          className="bg-gradient-to-r from-[#3366FF] to-[#4DF3FF] hover:from-[#2952CC] hover:to-[#3DD1E6] transition-all duration-200 px-6 py-3 rounded-lg font-semibold text-base shadow-lg hover:shadow-xl cursor-pointer w-[224px] h-[48px]"
+          whileHover={{
+            scale: 1.05,
+            boxShadow: "0 0 25px rgba(77, 243, 255, 0.5)",
+          }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ duration: 0.2 }}
         >
           Join Waitlist
-        </button>
-        <button
+        </motion.button>
+        <motion.button
           onClick={() =>
             window.open("https://veralux.gitbook.io/veralux-docs/", "_blank")
           }
           className="w-full sm:w-auto sm:min-w-[200px] h-[48px] border border-gray-400 hover:border-white rounded-lg text-white font-semibold text-base transition-all duration-200 hover:bg-white/5"
+          whileHover={{
+            scale: 1.02,
+            borderColor: "rgba(255, 255, 255, 1)",
+            backgroundColor: "rgba(255, 255, 255, 0.1)",
+          }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ duration: 0.2 }}
         >
           Whitepaper
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
     </section>
   );
 };

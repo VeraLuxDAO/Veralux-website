@@ -19,14 +19,8 @@ export default defineConfig({
     },
     // Enable source maps for production debugging
     sourcemap: false,
-    // Minimize asset size
-    minify: "terser",
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-      },
-    },
+    // Minimize asset size with esbuild (faster and built-in)
+    minify: "esbuild",
   },
   optimizeDeps: {
     include: ["react", "react-dom", "framer-motion"],

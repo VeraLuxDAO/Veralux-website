@@ -8,7 +8,7 @@ import StakingRules from "../components/Staking/StakingRules";
 
 export default function Staking() {
   return (
-    <div>
+    <div className="pt-28 sm:pt-32 md:pt-36 lg:pt-40 xl:pt-44">
       <div className="w-full px-4 sm:px-6 md:px-12 lg:px-16 xl:px-28">
         <StakingHeader />
         <div className="flex flex-col lg:flex-row gap-4 md:gap-6 lg:gap-[25px] w-full min-h-[400px] lg:h-[610px] justify-center">

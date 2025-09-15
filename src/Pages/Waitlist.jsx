@@ -88,7 +88,7 @@ const Waitlist = () => {
   };
 
   return (
-    <div className="min-h-screen text-white pt-16 sm:pt-24 pb-12 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-24">
+    <div className="min-h-screen text-white pt-24 sm:pt-24 pb-12 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-24">
       <motion.div
         className="max-w-4xl mx-auto"
         initial="hidden"

@@ -56,7 +56,7 @@ const VeraluxFeatures = () => {
   return (
     <section
       id="features"
-      className="min-h-screen text-white py-4 sm:py-6 md:py-8 lg:py-12 flex flex-col justify-center relative px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12"
+      className="min-h-screen text-white py-4 sm:py-6 md:py-8 lg:py-12 flex flex-col justify-center relative px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12"
     >
       <motion.div
         className="w-full max-w-6xl mx-auto flex flex-col items-center justify-center text-center mb-4 sm:mb-6 md:mb-8 lg:mb-12"

@@ -150,14 +150,15 @@ const Navbar = () => {
 
   const scrollToTop = () => {
     navigate("/");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
     setMenuOpen(false);
   };
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 backdrop-blur-xl text-white transition-all duration-300 ease-out transform ${
-        isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-75"
+      className={`fixed top-0 left-0 w-full z-50 backdrop-blur-xl text-white transition-all duration-300 ease-out transform navbar-consistent ${
+        isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-95"
       }`}
       style={{
         background: `linear-gradient(135deg, 
@@ -166,6 +167,7 @@ const Navbar = () => {
           rgba(13, 13, 13, 0.95) 100%)`,
         boxShadow: `0 8px 32px rgba(77, 243, 255, 0.1), 
                     0 4px 16px rgba(51, 102, 255, 0.1)`,
+        borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
       }}
     >
       <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-16">

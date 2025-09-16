@@ -15,7 +15,7 @@ export const fadeInUp = {
     y: 0,
     scale: 1,
     transition: {
-      duration: 0.6,
+      duration: 0.4, // Faster for desktop
       ease: [0.25, 0.46, 0.45, 0.94], // Custom easing for smooth feel
     },
   },
@@ -130,8 +130,8 @@ export const staggerContainer = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.1,
+      staggerChildren: 0.06, // Faster stagger for desktop
+      delayChildren: 0.05, // Reduced delay
     },
   },
 };
@@ -141,8 +141,21 @@ export const staggerContainerFast = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.05,
+      staggerChildren: 0.03, // Even faster for desktop
+      delayChildren: 0.02, // Minimal delay
+    },
+  },
+};
+
+// Desktop-optimized container for instant loading
+export const staggerContainerDesktop = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.02, // Very fast for desktop
+      delayChildren: 0.01, // Almost instant
+      duration: 0.2, // Quick container fade
     },
   },
 };
@@ -230,7 +243,7 @@ export const titleAnimation = {
     y: 0,
     scale: 1,
     transition: {
-      duration: 0.8,
+      duration: 0.5, // Faster for desktop
       ease: [0.25, 0.46, 0.45, 0.94],
     },
   },

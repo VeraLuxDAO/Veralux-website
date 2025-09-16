@@ -9,13 +9,13 @@ const HeroSection = () => {
   const title =
     "A Community-Driven\nEcosystem, Designed For The\nFuture Of Web3";
 
-  // Optimized animation for the entire title
+  // Optimized animation for the entire title - faster for desktop
   const titleAnimation = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: "easeOut" },
+      transition: { duration: 0.5, ease: "easeOut" }, // Faster duration
     },
   };
 
@@ -47,9 +47,9 @@ const HeroSection = () => {
       {/* Subheading */}
       <motion.p
         className="text-gray-300 max-w-xl text-lg mb-10 relative z-10 mt-6"
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.8 }}
+        transition={{ duration: 0.4, delay: 0.3 }} // Faster and earlier
       >
         Stake, govern and thrive in a decentralized ecosystem built on trust and
         transparency.
@@ -58,9 +58,9 @@ const HeroSection = () => {
       {/* Buttons */}
       <motion.div
         className="flex flex-col sm:flex-row gap-4 justify-center relative z-10"
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 1.0 }}
+        transition={{ duration: 0.4, delay: 0.5 }} // Much faster
       >
         <motion.button
           onClick={() => navigate("/waitlist")}

@@ -11,7 +11,7 @@ import {
 const TokenAllocation = () => {
   return (
     <motion.div
-      className="flex flex-col items-center justify-center pt-12 sm:pt-16 md:pt-20 lg:pt-24 xl:pt-32 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-24"
+      className="flex flex-col items-center justify-center pt-12 sm:pt-16 md:pt-20 lg:pt-24 xl:pt-32 pb-8 sm:pb-12 md:pb-16 lg:pb-20 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-24"
       initial="hidden"
       whileInView="visible"
       viewport={defaultViewport}
@@ -44,9 +44,9 @@ const TokenAllocation = () => {
         Transparent distribution of 100 billion $LUX tokens
       </motion.p>
 
-      {/* Chart Image Area */}
+      {/* Chart Image Area - Optimized Size */}
       <motion.div
-        className="relative w-full h-full flex items-center justify-center"
+        className="relative w-full max-w-4xl mx-auto flex items-center justify-center"
         variants={{
           hidden: { opacity: 0, scale: 0.9 },
           visible: {
@@ -60,7 +60,7 @@ const TokenAllocation = () => {
         <motion.img
           src={TokenAll}
           alt="Token Allocation Chart"
-          className="hidden sm:block object-contain w-full max-h-[700px] opacity-80"
+          className="hidden sm:block object-contain w-full max-h-[450px] md:max-h-[500px] lg:max-h-[550px] opacity-80"
           whileHover={{
             scale: 1.05,
             opacity: 1,
@@ -72,7 +72,7 @@ const TokenAllocation = () => {
         <motion.img
           src={TokenAllMobile}
           alt="Token Allocation Chart Mobile"
-          className="block sm:hidden object-contain w-full h-auto max-h-[600px]"
+          className="block sm:hidden object-contain w-full h-auto max-h-[400px] max-w-[320px] mx-auto"
           whileHover={{
             scale: 1.05,
             filter: "drop-shadow(0 0 25px rgba(77, 243, 255, 0.3))",

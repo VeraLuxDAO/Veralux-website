@@ -160,7 +160,6 @@ const VeraluxSolutions = () => {
               className="leading-relaxed text-gray-300 group-hover:text-gray-100 transition-colors duration-300"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 1.2 }}
             >
               It's all connected, so your actions in one area (like earning rep
               from a game) boost you in others (like getting better deals in the

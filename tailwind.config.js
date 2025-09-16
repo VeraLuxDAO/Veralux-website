@@ -13,6 +13,9 @@ export default {
       },
       backgroundImage: {
         "hero-gradient": "linear-gradient(to bottom, #171c4b, #273574)",
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-conic":
+          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       keyframes: {
         spinFade: {

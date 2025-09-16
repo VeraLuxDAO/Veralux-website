@@ -122,7 +122,7 @@ const TeamSection = () => {
 
         {/* Team Members */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 mb-8 sm:mb-12 max-w-4xl mx-auto"
+          className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 lg:gap-10 mb-8 sm:mb-12 max-w-4xl mx-auto"
           initial="hidden"
           whileInView="visible"
           viewport={defaultViewport}
@@ -131,7 +131,7 @@ const TeamSection = () => {
           {teamMembers.map((member, index) => (
             <motion.div
               key={index}
-              className="group relative w-full aspect-[3/4] max-w-sm mx-auto rounded-lg overflow-hidden shadow-lg cursor-pointer hardware-accelerated"
+              className="group relative w-full aspect-[3/4] max-w-[280px] sm:max-w-[320px] md:max-w-sm mx-auto rounded-lg overflow-hidden shadow-lg cursor-pointer hardware-accelerated"
               variants={teamCardVariants}
               whileHover="hover"
             >
@@ -155,11 +155,11 @@ const TeamSection = () => {
               />
 
               {/* Overlay gradient at bottom for text readability */}
-              <div className="absolute bottom-0 left-0 right-0 h-20 sm:h-24 bg-gradient-to-t from-[#3366FF] via-[#3366FF]/90 via-[40%] to-transparent pointer-events-none group-hover:from-[#4DF3FF] transition-colors duration-300" />
+              <div className="absolute bottom-0 left-0 right-0 h-16 sm:h-20 md:h-24 bg-gradient-to-t from-[#3366FF] via-[#3366FF]/90 via-[40%] to-transparent pointer-events-none group-hover:from-[#4DF3FF] transition-colors duration-300" />
 
               {/* Content container */}
               <motion.div
-                className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 flex justify-between items-center text-white z-10"
+                className="absolute bottom-2 sm:bottom-3 md:bottom-4 left-2 sm:left-3 md:left-4 right-2 sm:right-3 md:right-4 flex justify-between items-center text-white z-10"
                 initial={{ y: 20, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
@@ -168,14 +168,14 @@ const TeamSection = () => {
                 {/* Left: Name and role */}
                 <div className="text-left flex-1 min-w-0">
                   <motion.h3
-                    className="font-semibold text-base sm:text-lg md:text-xl truncate group-hover:text-blue-100 transition-colors duration-300"
+                    className="font-semibold text-sm sm:text-base md:text-lg truncate group-hover:text-blue-100 transition-colors duration-300"
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.2 }}
                   >
                     {member.name}
                   </motion.h3>
                   <motion.p
-                    className="text-xs sm:text-sm opacity-80 truncate group-hover:opacity-100 group-hover:text-cyan-200 transition-all duration-300"
+                    className="text-xs opacity-80 truncate group-hover:opacity-100 group-hover:text-cyan-200 transition-all duration-300"
                     whileHover={{ scale: 1.02 }}
                     transition={{ duration: 0.2 }}
                   >
@@ -184,7 +184,7 @@ const TeamSection = () => {
                 </div>
 
                 {/* Right: Icons */}
-                <div className="flex space-x-3 sm:space-x-4 text-lg sm:text-xl md:text-2xl opacity-90 hover:opacity-100 flex-shrink-0">
+                <div className="flex space-x-2 sm:space-x-3 text-base sm:text-lg md:text-xl opacity-90 hover:opacity-100 flex-shrink-0">
                   <motion.a
                     href={member.links.twitter}
                     target="_blank"

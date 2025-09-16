@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import Logo from "../assets/logo.png";
 import VectorIcon from "../assets/Vector.svg";
 import { FaDiscord, FaXTwitter, FaTelegram, FaYoutube } from "react-icons/fa6";
@@ -11,6 +12,119 @@ const Navbar = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isHoveringTop, setIsHoveringTop] = useState(false);
+
+  // Mobile menu animation variants
+  const menuVariants = {
+    hidden: {
+      opacity: 0,
+      y: -50,
+      scale: 0.95,
+      transition: {
+        duration: 0.3,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.4,
+        ease: [0.25, 0.46, 0.45, 0.94],
+        staggerChildren: 0.08,
+        delayChildren: 0.1,
+      },
+    },
+    exit: {
+      opacity: 0,
+      y: -30,
+      scale: 0.98,
+      transition: {
+        duration: 0.25,
+        ease: [0.25, 0.46, 0.45, 0.94],
+        staggerChildren: 0.04,
+        staggerDirection: -1,
+      },
+    },
+  };
+
+  const menuItemVariants = {
+    hidden: {
+      opacity: 0,
+      x: -30,
+      y: 20,
+      scale: 0.95,
+    },
+    visible: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
+    exit: {
+      opacity: 0,
+      x: -20,
+      y: 10,
+      scale: 0.95,
+      transition: {
+        duration: 0.2,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
+  };
+
+  const socialItemVariants = {
+    hidden: {
+      opacity: 0,
+      scale: 0.8,
+      y: 30,
+      rotateY: -15,
+    },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      rotateY: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.8,
+      y: 20,
+      rotateY: 15,
+      transition: {
+        duration: 0.3,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
+  };
+
+  const floatingParticleVariants = {
+    hidden: { opacity: 0, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut",
+        delay: 0.3,
+      },
+    },
+    exit: {
+      opacity: 0,
+      scale: 0,
+      transition: {
+        duration: 0.3,
+      },
+    },
+  };
 
   // Set initial active section based on current pathname
   useEffect(() => {
@@ -324,114 +438,226 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu - Premium Glass Design */}
-      {menuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full backdrop-blur-2xl border-t border-white/10 overflow-hidden">
-          <div
-            className="relative px-4 py-6"
-            style={{
-              background: `linear-gradient(135deg, 
+      {/* Mobile Menu - Premium Glass Design with Animations */}
+      <AnimatePresence mode="wait">
+        {menuOpen && (
+          <motion.div
+            className="md:hidden absolute top-full left-0 w-full backdrop-blur-2xl border-t border-white/10 overflow-hidden"
+            variants={menuVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+          >
+            <div
+              className="relative px-4 py-6"
+              style={{
+                background: `linear-gradient(135deg, 
                 rgba(13, 13, 13, 0.98) 0%, 
                 rgba(20, 25, 40, 0.98) 30%,
                 rgba(15, 20, 35, 0.98) 70%, 
                 rgba(13, 13, 13, 0.98) 100%)`,
-            }}
-          >
-            {/* Animated background elements */}
-            <div className="absolute inset-0 opacity-30">
-              <div className="absolute top-0 left-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
-              <div
-                className="absolute bottom-0 right-0 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl animate-pulse"
-                style={{ animationDelay: "1s" }}
-              ></div>
-            </div>
-
-            <div className="relative z-10 space-y-6">
-              {/* Navigation Links - Clean Grid */}
-              <div className="space-y-2">
-                {navLinks.map((link, index) => (
-                  <a
-                    key={index}
-                    href={link.href}
-                    className={`block px-4 py-4 rounded-2xl font-medium transition-all duration-300 group ${
-                      activeSection === link.section
-                        ? "text-white bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-blue-400/30 shadow-lg shadow-blue-500/20"
-                        : "text-gray-300 hover:text-white hover:bg-white/5 hover:backdrop-blur-sm border border-transparent hover:border-white/10"
-                    }`}
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span>{link.name}</span>
-                      <svg
-                        className="w-5 h-5 opacity-0 group-hover:opacity-100 transform translate-x-0 group-hover:translate-x-1 transition-all duration-300"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </div>
-                  </a>
+              }}
+            >
+              {/* Enhanced Animated background elements */}
+              <motion.div
+                className="absolute inset-0 opacity-30"
+                variants={floatingParticleVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              >
+                <motion.div
+                  className="absolute top-0 left-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl"
+                  animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0.3, 0.6, 0.3],
+                    x: [0, 10, 0],
+                    y: [0, -5, 0],
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                />
+                <motion.div
+                  className="absolute bottom-0 right-0 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl"
+                  animate={{
+                    scale: [1, 1.1, 1],
+                    opacity: [0.3, 0.5, 0.3],
+                    x: [0, -15, 0],
+                    y: [0, 8, 0],
+                  }}
+                  transition={{
+                    duration: 5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 1,
+                  }}
+                />
+                {/* Additional floating particles */}
+                {[...Array(6)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute w-2 h-2 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full opacity-60"
+                    style={{
+                      left: `${20 + (i % 3) * 30}%`,
+                      top: `${15 + (i % 2) * 70}%`,
+                    }}
+                    animate={{
+                      y: [-10, 10, -10],
+                      opacity: [0.3, 0.8, 0.3],
+                      scale: [0.8, 1.2, 0.8],
+                    }}
+                    transition={{
+                      duration: 3 + i * 0.5,
+                      repeat: Infinity,
+                      delay: i * 0.3,
+                      ease: "easeInOut",
+                    }}
+                  />
                 ))}
-              </div>
+              </motion.div>
 
-              {/* Social Links - Colorful & Appealing */}
-              <div className="space-y-4">
-                <h3 className="text-gray-400 text-sm font-semibold tracking-wider uppercase">
-                  Follow Us
-                </h3>
-                <div className="grid grid-cols-3 gap-4">
-                  {socialLinks.map((social, index) => {
-                    const IconComponent = social.icon;
-                    return (
-                      <a
-                        key={index}
-                        href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`relative flex flex-col items-center p-4 rounded-2xl border transition-all duration-300 group hover:scale-105 hover:-translate-y-1 ${social.bgColor} ${social.borderColor} ${social.hoverBg}`}
-                        style={{
-                          boxShadow: `0 4px 20px ${social.color}15`,
-                        }}
-                      >
-                        <IconComponent
-                          className="w-6 h-6 mb-2 transition-all duration-300 group-hover:scale-110"
-                          style={{ color: social.color }}
-                        />
-                        <span className="text-xs font-medium text-gray-300 group-hover:text-white transition-colors duration-300">
-                          {social.name}
-                        </span>
-                        {/* Animated glow */}
-                        <div
-                          className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              <motion.div
+                className="relative z-10 space-y-6"
+                variants={menuVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              >
+                {/* Navigation Links - Clean Grid */}
+                <motion.div className="space-y-2" variants={menuVariants}>
+                  {navLinks.map((link, index) => (
+                    <motion.a
+                      key={index}
+                      href={link.href}
+                      className={`block px-4 py-4 rounded-2xl font-medium transition-all duration-300 group ${
+                        activeSection === link.section
+                          ? "text-white bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-blue-400/30 shadow-lg shadow-blue-500/20"
+                          : "text-gray-300 hover:text-white hover:bg-white/5 hover:backdrop-blur-sm border border-transparent hover:border-white/10"
+                      }`}
+                      onClick={() => setMenuOpen(false)}
+                      variants={menuItemVariants}
+                      whileHover={{
+                        scale: 1.02,
+                        x: 5,
+                        transition: { duration: 0.2, ease: "easeOut" },
+                      }}
+                      whileTap={{
+                        scale: 0.98,
+                        transition: { duration: 0.1 },
+                      }}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span>{link.name}</span>
+                        <svg
+                          className="w-5 h-5 opacity-0 group-hover:opacity-100 transform translate-x-0 group-hover:translate-x-1 transition-all duration-300"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </div>
+                    </motion.a>
+                  ))}
+                </motion.div>
+
+                {/* Social Links - Colorful & Appealing */}
+                <motion.div className="space-y-4" variants={menuItemVariants}>
+                  <motion.h3
+                    className="text-gray-400 text-sm font-semibold tracking-wider uppercase"
+                    variants={menuItemVariants}
+                  >
+                    Follow Us
+                  </motion.h3>
+                  <motion.div
+                    className="grid grid-cols-3 gap-4"
+                    variants={menuVariants}
+                  >
+                    {socialLinks.map((social, index) => {
+                      const IconComponent = social.icon;
+                      return (
+                        <motion.a
+                          key={index}
+                          href={social.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`relative flex flex-col items-center p-4 rounded-2xl border transition-all duration-300 group ${social.bgColor} ${social.borderColor} ${social.hoverBg}`}
                           style={{
-                            background: `linear-gradient(135deg, ${social.color}10, ${social.color}25)`,
-                            boxShadow: `0 8px 30px ${social.color}25`,
+                            boxShadow: `0 4px 20px ${social.color}15`,
                           }}
-                        ></div>
-                      </a>
-                    );
-                  })}
-                </div>
-              </div>
+                          variants={socialItemVariants}
+                          whileHover={{
+                            scale: 1.1,
+                            y: -5,
+                            rotateY: 5,
+                            transition: {
+                              duration: 0.3,
+                              ease: "easeOut",
+                            },
+                          }}
+                          whileTap={{
+                            scale: 0.95,
+                            transition: { duration: 0.1 },
+                          }}
+                        >
+                          <IconComponent
+                            className="w-6 h-6 mb-2 transition-all duration-300 group-hover:scale-110"
+                            style={{ color: social.color }}
+                          />
+                          <span className="text-xs font-medium text-gray-300 group-hover:text-white transition-colors duration-300">
+                            {social.name}
+                          </span>
+                          {/* Animated glow */}
+                          <div
+                            className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                            style={{
+                              background: `linear-gradient(135deg, ${social.color}10, ${social.color}25)`,
+                              boxShadow: `0 8px 30px ${social.color}25`,
+                            }}
+                          ></div>
+                        </motion.a>
+                      );
+                    })}
+                  </motion.div>
+                </motion.div>
 
-              {/* Connect Button - Full Width Beauty */}
-              <button className="relative w-full py-4 rounded-2xl font-bold text-base bg-gradient-to-r from-[#3366FF] to-[#4DF3FF] hover:from-[#2952CC] hover:to-[#3DD1E6] transition-all duration-300 shadow-xl hover:shadow-2xl hover:shadow-cyan-500/30 transform hover:scale-[1.02] overflow-hidden group">
-                <span className="relative z-10">Connect Wallet</span>
-                {/* Animated background */}
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                {/* Shine effect */}
-                <div className="absolute inset-0 -skew-x-12 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000"></div>
-              </button>
+                {/* Connect Button - Full Width Beauty */}
+                <motion.button
+                  className="relative w-full py-4 rounded-2xl font-bold text-base bg-gradient-to-r from-[#3366FF] to-[#4DF3FF] hover:from-[#2952CC] hover:to-[#3DD1E6] transition-all duration-300 shadow-xl hover:shadow-2xl hover:shadow-cyan-500/30 overflow-hidden group"
+                  variants={menuItemVariants}
+                  whileHover={{
+                    scale: 1.05,
+                    y: -2,
+                    boxShadow: "0 20px 40px rgba(77, 243, 255, 0.3)",
+                    transition: {
+                      duration: 0.3,
+                      ease: "easeOut",
+                    },
+                  }}
+                  whileTap={{
+                    scale: 0.98,
+                    transition: { duration: 0.1 },
+                  }}
+                >
+                  <span className="relative z-10">Connect Wallet</span>
+                  {/* Animated background */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                  {/* Shine effect */}
+                  <div className="absolute inset-0 -skew-x-12 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000"></div>
+                </motion.button>
+              </motion.div>
             </div>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };

@@ -1,6 +1,5 @@
 import React, { useState, memo } from "react";
 import { createPortal } from "react-dom";
-import { motion, AnimatePresence } from "framer-motion";
 import {
   FaDiscord,
   FaXTwitter,
@@ -67,12 +66,12 @@ const WaitlistStandalone = () => {
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
 
-    // Check if the input has meaningful content (at least 2 characters for usernames, proper format for email)
+    // Check if the input has meaningful content (at least 4 characters for usernames, proper format for email)
     let isValidInput = false;
 
     if (field === "discordUsername" || field === "twitterUsername") {
-      // Require at least 2 characters for usernames
-      isValidInput = value.trim().length >= 2;
+      // Require at least 4 characters for usernames to be more meaningful
+      isValidInput = value.trim().length >= 4;
     } else if (field === "email") {
       // Basic email validation (contains @ and reasonable length)
       isValidInput = value.trim().includes("@") && value.trim().length >= 5;
@@ -153,37 +152,12 @@ const WaitlistStandalone = () => {
     return false;
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.05 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 10 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.3 },
-    },
-  };
-
   return (
     <>
       <div className="min-h-screen text-white pt-28 sm:pt-32 md:pt-36 lg:pt-40 xl:pt-44 pb-12 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-24 scroll-optimized">
-        <motion.div
-          className="max-w-4xl mx-auto hardware-accelerated"
-          initial="hidden"
-          animate="visible"
-          variants={containerVariants}
-        >
+        <div className="max-w-4xl mx-auto hardware-accelerated">
           {/* Header */}
-          <motion.div
-            className="text-center mb-8 sm:mb-12"
-            variants={itemVariants}
-          >
+          <div className="text-center mb-8 sm:mb-12">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4 font-tactic bg-gradient-to-r from-[#3366FF] to-[#4DF3FF] bg-clip-text text-transparent">
               Join the Waitlist
             </h1>
@@ -195,13 +169,10 @@ const WaitlistStandalone = () => {
               Early members get priority access to features, airdrops, and
               exclusive rewards.
             </p>
-          </motion.div>
+          </div>
 
           {/* Progress Indicator */}
-          <motion.div
-            className="flex justify-center mb-8 sm:mb-12 px-4"
-            variants={itemVariants}
-          >
+          <div className="flex justify-center mb-8 sm:mb-12 px-4">
             <div className="flex items-center space-x-2 sm:space-x-4 max-w-full overflow-x-auto">
               {[1, 2, 3, 4].map((step) => (
                 <div key={step} className="flex items-center flex-shrink-0">
@@ -232,12 +203,12 @@ const WaitlistStandalone = () => {
                 </div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
           {/* Form Steps */}
           <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-8">
             {/* Step 1: Discord */}
-            <motion.div
+            <div
               className={`p-4 sm:p-6 rounded-xl border transition-all duration-300 ${
                 currentStep === 1
                   ? "border-blue-500 bg-blue-500/10"
@@ -247,7 +218,6 @@ const WaitlistStandalone = () => {
               } ${
                 !isStepAccessible(1) ? "opacity-50 pointer-events-none" : ""
               }`}
-              variants={itemVariants}
             >
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                 <div className="flex items-center space-x-4">
@@ -279,17 +249,13 @@ const WaitlistStandalone = () => {
               </div>
 
               {isStepAccessible(1) && hasJoinedDiscord && (
-                <motion.div
+                <div
                   className="mt-4"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
                 >
                   <div className="space-y-3">
-                    <motion.div
+                    <div
                       className="flex items-center justify-between text-sm text-green-400 bg-green-400/10 p-3 rounded-lg border border-green-400/20"
-                      initial={{ scale: 0.95, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
                       transition={{ duration: 0.2, delay: 0.1 }}
                     >
                       <div className="flex items-center space-x-2">
@@ -311,7 +277,7 @@ const WaitlistStandalone = () => {
                       >
                         Reset
                       </button>
-                    </motion.div>
+                    </div>
 
                     <input
                       type="text"
@@ -325,7 +291,7 @@ const WaitlistStandalone = () => {
                       autoFocus
                     />
                   </div>
-                </motion.div>
+                </div>
               )}
 
               {isStepAccessible(1) && !hasJoinedDiscord && (
@@ -337,10 +303,10 @@ const WaitlistStandalone = () => {
                   </p>
                 </div>
               )}
-            </motion.div>
+            </div>
 
             {/* Step 2: Twitter */}
-            <motion.div
+            <div
               className={`p-4 sm:p-6 rounded-xl border transition-all duration-300 ${
                 currentStep === 2
                   ? "border-blue-500 bg-blue-500/10"
@@ -350,7 +316,6 @@ const WaitlistStandalone = () => {
               } ${
                 !isStepAccessible(2) ? "opacity-50 pointer-events-none" : ""
               }`}
-              variants={itemVariants}
             >
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                 <div className="flex items-center space-x-4">
@@ -382,17 +347,13 @@ const WaitlistStandalone = () => {
               </div>
 
               {isStepAccessible(2) && hasFollowedTwitter && (
-                <motion.div
+                <div
                   className="mt-4"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
                 >
                   <div className="space-y-3">
-                    <motion.div
+                    <div
                       className="flex items-center justify-between text-sm text-green-400 bg-green-400/10 p-3 rounded-lg border border-green-400/20"
-                      initial={{ scale: 0.95, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
                       transition={{ duration: 0.2, delay: 0.1 }}
                     >
                       <div className="flex items-center space-x-2">
@@ -412,7 +373,7 @@ const WaitlistStandalone = () => {
                       >
                         Reset
                       </button>
-                    </motion.div>
+                    </div>
 
                     <input
                       type="text"
@@ -426,7 +387,7 @@ const WaitlistStandalone = () => {
                       autoFocus
                     />
                   </div>
-                </motion.div>
+                </div>
               )}
 
               {isStepAccessible(2) && !hasFollowedTwitter && (
@@ -438,10 +399,10 @@ const WaitlistStandalone = () => {
                   </p>
                 </div>
               )}
-            </motion.div>
+            </div>
 
             {/* Step 3: Email */}
-            <motion.div
+            <div
               className={`p-4 sm:p-6 rounded-xl border transition-all duration-300 ${
                 currentStep === 3
                   ? "border-blue-500 bg-blue-500/10"
@@ -451,7 +412,6 @@ const WaitlistStandalone = () => {
               } ${
                 !isStepAccessible(3) ? "opacity-50 pointer-events-none" : ""
               }`}
-              variants={itemVariants}
             >
               <div className="flex items-center space-x-4 mb-4">
                 <FaEnvelope className="text-2xl text-blue-400" />
@@ -472,10 +432,10 @@ const WaitlistStandalone = () => {
                   required
                 />
               )}
-            </motion.div>
+            </div>
 
             {/* Step 4: Wallet */}
-            <motion.div
+            <div
               className={`p-4 sm:p-6 rounded-xl border transition-all duration-300 ${
                 currentStep === 4
                   ? "border-blue-500 bg-blue-500/10"
@@ -485,7 +445,6 @@ const WaitlistStandalone = () => {
               } ${
                 !isStepAccessible(4) ? "opacity-50 pointer-events-none" : ""
               }`}
-              variants={itemVariants}
             >
               <div className="flex items-center space-x-4 mb-4">
                 <FaWallet className="text-2xl text-green-400" />
@@ -510,27 +469,19 @@ const WaitlistStandalone = () => {
                   required
                 />
               )}
-            </motion.div>
+            </div>
 
             {/* Error Message */}
             {submitError && (
-              <motion.div
-                className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 text-center"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                variants={itemVariants}
-              >
+              <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 text-center">
                 <p className="text-red-400 text-sm sm:text-base">
                   {submitError}
                 </p>
-              </motion.div>
+              </div>
             )}
 
             {/* Submit Button */}
-            <motion.div
-              className="text-center pt-6 sm:pt-8"
-              variants={itemVariants}
-            >
+            <div className="text-center pt-6 sm:pt-8">
               <button
                 type="submit"
                 disabled={
@@ -554,29 +505,22 @@ const WaitlistStandalone = () => {
                 By joining, you agree to receive updates about VeraLux launches
                 and exclusive opportunities.
               </p>
-            </motion.div>
+            </div>
           </form>
-        </motion.div>
+        </div>
       </div>
 
       {/* Success Modal */}
       {showSuccessModal &&
         typeof document !== "undefined" &&
         createPortal(
-          <AnimatePresence>
-            <motion.div
+          <>
+            <div
               className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
               onClick={() => setShowSuccessModal(false)}
             >
-              <motion.div
+              <div
                 className="relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-6 sm:p-8 max-w-md w-full border border-gray-700 shadow-2xl"
-                initial={{ scale: 0.7, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.7, opacity: 0 }}
-                transition={{ type: "spring", duration: 0.5 }}
                 onClick={(e) => e.stopPropagation()}
               >
                 <button
@@ -640,9 +584,9 @@ const WaitlistStandalone = () => {
                     Join Discord
                   </button>
                 </div>
-              </motion.div>
-            </motion.div>
-          </AnimatePresence>,
+              </div>
+            </div>
+          </>,
           document.body
         )}
     </>

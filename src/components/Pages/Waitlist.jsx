@@ -60,12 +60,12 @@ const Waitlist = () => {
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
 
-    // Check if the input has meaningful content (at least 2 characters for usernames, proper format for email)
+    // Check if the input has meaningful content (at least 4 characters for usernames, proper format for email)
     let isValidInput = false;
 
     if (field === "discordUsername" || field === "twitterUsername") {
-      // Require at least 2 characters for usernames
-      isValidInput = value.trim().length >= 2;
+      // Require at least 4 characters for usernames to be more meaningful
+      isValidInput = value.trim().length >= 4;
     } else if (field === "email") {
       // Basic email validation (contains @ and reasonable length)
       isValidInput = value.trim().includes("@") && value.trim().length >= 5;

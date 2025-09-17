@@ -1,15 +1,15 @@
 import React, { lazy, Suspense, useEffect, useState } from "react";
-import Navbar from "./Pages/Navbar";
+import Navbar from "./components/Pages/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Footer from "./components/About/Footer";
 import CustomScrollbar from "./components/CustomScrollbar";
 // Import About page directly for instant loading (landing page)
-import About from "./Pages/About";
+import About from "./components/Pages/About";
 
 // Lazy load other pages for better performance
-const Staking = lazy(() => import("./Pages/Staking"));
-const Waitlist = lazy(() => import("./Pages/Waitlist"));
-const Profile = lazy(() => import("./Pages/Profile"));
+const Staking = lazy(() => import("./components/Pages/Staking"));
+const Waitlist = lazy(() => import("./components/Pages/Waitlist"));
+const Profile = lazy(() => import("./components/Pages/Profile"));
 
 // Enhanced loading component with skeleton
 const PageLoader = () => (

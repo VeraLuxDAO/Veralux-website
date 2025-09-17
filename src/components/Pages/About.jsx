@@ -1,13 +1,13 @@
 import React from "react";
 import { motion } from "framer-motion";
-import HeroSection from "../components/About/HeroSection";
-import AboutSection from "../components/About/AboutSection";
-import VeraluxFeatures from "../components/About/VeraluxFeatures";
-import Connector from "../components/About/Connector";
-import Tokenomics from "../components/About/Tokenomics";
-import FeatureCard from "../components/About/FeatureCard";
-import TokenAllocation from "../components/About/TokenAllocation";
-import TeamSection from "../components/About/Team";
+import HeroSection from "../About/HeroSection";
+import AboutSection from "../About/AboutSection";
+import VeraluxFeatures from "../About/VeraluxFeatures";
+import Connector from "../About/Connector";
+import Tokenomics from "../About/Tokenomics";
+import FeatureCard from "../About/FeatureCard";
+import TokenAllocation from "../About/TokenAllocation";
+import TeamSection from "../About/Team";
 
 const About = () => {
   // Detect if user prefers reduced motion (safely)

@@ -2,15 +2,14 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaDiscord, FaXTwitter, FaTelegram, FaYoutube } from "react-icons/fa6";
+import { FaDiscord, FaXTwitter, FaTelegram } from "react-icons/fa6";
 
 // Using public assets path for Next.js
-const Logo = "/assets/logo.png";
 const VectorIcon = "/assets/Vector.svg";
 
 const NavbarForNextJS = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("waitlist"); // Set waitlist as active
+  const [activeSection] = useState("waitlist"); // Set waitlist as active
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isHoveringTop, setIsHoveringTop] = useState(false);

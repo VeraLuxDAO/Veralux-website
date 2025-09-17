@@ -1,7 +1,30 @@
 "use client";
 
-import App from "../src/App";
+import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+
+// Completely disable SSR for this page to prevent any framer-motion issues
+const App = dynamic(() => import("../src/App"), {
+  ssr: false,
+});
 
 export default function HomePage() {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-950 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-white text-lg">Loading VeraLux...</p>
+        </div>
+      </div>
+    );
+  }
+
   return <App />;
 }

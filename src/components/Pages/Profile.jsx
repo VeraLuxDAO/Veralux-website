@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import DisconnectedState from "../components/Profile/DisconnectedState";
-import ConnectedState from "../components/Profile/ConnectedState";
+import DisconnectedState from "../Profile/DisconnectedState";
+import ConnectedState from "../Profile/ConnectedState";
 
 export default function Profile() {
   const [isConnected, setIsConnected] = useState(false);

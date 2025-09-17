@@ -1,10 +1,10 @@
 import React from "react";
-import StakingHeader from "../components/Staking/StakingHeader";
-import StakingStats from "../components/Staking/StakingStats";
-import ConnectWallet from "../components/Staking/ConnectWallet";
-import StakingRewards from "../components/Staking/StaingRewards";
-import APRSection from "../components/Staking/APRSection";
-import StakingRules from "../components/Staking/StakingRules";
+import StakingHeader from "../Staking/StakingHeader";
+import StakingStats from "../Staking/StakingStats";
+import ConnectWallet from "../Staking/ConnectWallet";
+import StakingRewards from "../Staking/StaingRewards";
+import APRSection from "../Staking/APRSection";
+import StakingRules from "../Staking/StakingRules";
 
 export default function Staking() {
   return (

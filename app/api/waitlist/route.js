@@ -207,7 +207,8 @@ export async function GET() {
       },
       { status: 200 }
     );
-  } catch (error) {
+  } catch (dbError) {
+    console.error("Database connection error:", dbError);
     return NextResponse.json(
       {
         success: false,

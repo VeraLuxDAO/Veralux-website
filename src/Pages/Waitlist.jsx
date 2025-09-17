@@ -60,14 +60,27 @@ const Waitlist = () => {
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
 
-    // Mark step as completed when input is filled
-    if (value.trim()) {
+    // Check if the input has meaningful content (at least 2 characters for usernames, proper format for email)
+    let isValidInput = false;
+
+    if (field === "discordUsername" || field === "twitterUsername") {
+      // Require at least 2 characters for usernames
+      isValidInput = value.trim().length >= 2;
+    } else if (field === "email") {
+      // Basic email validation (contains @ and reasonable length)
+      isValidInput = value.trim().includes("@") && value.trim().length >= 5;
+    } else if (field === "walletAddress") {
+      // Require at least 10 characters for wallet address
+      isValidInput = value.trim().length >= 10;
+    }
+
+    if (isValidInput) {
       setCompletedSteps((prev) => ({
         ...prev,
         [field.replace("Username", "").replace("Address", "")]: true,
       }));
 
-      // Auto-advance to next step
+      // Auto-advance to next step only after valid input
       if (field === "discordUsername" && currentStep === 1) {
         setCurrentStep(2);
       } else if (field === "twitterUsername" && currentStep === 2) {
@@ -75,6 +88,12 @@ const Waitlist = () => {
       } else if (field === "email" && currentStep === 3) {
         setCurrentStep(4);
       }
+    } else {
+      // Mark step as incomplete if input doesn't meet criteria
+      setCompletedSteps((prev) => ({
+        ...prev,
+        [field.replace("Username", "").replace("Address", "")]: false,
+      }));
     }
   };
 

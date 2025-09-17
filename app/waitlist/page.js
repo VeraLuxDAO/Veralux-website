@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import WaitlistStandalone from "./WaitlistStandalone";
+import NavbarForNextJS from "./NavbarForNextJS";
 
 export default function WaitlistPage() {
   const [isClient, setIsClient] = useState(false);
@@ -23,6 +24,7 @@ export default function WaitlistPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-950">
+      <NavbarForNextJS />
       <WaitlistStandalone />
     </div>
   );

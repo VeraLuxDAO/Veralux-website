@@ -245,13 +245,6 @@ const TeamSection = () => {
             Join the Waitlist
             <FiArrowUpRight className="text-sm sm:text-lg" />
           </motion.button>
-          <motion.button
-            className="bg-transparent border border-white px-4 w-[224px] h-[44px] sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-gray-800 transition flex items-center justify-center gap-2 text-sm sm:text-base"
-            variants={cardVariants}
-          >
-            Learn More
-            <FiArrowUpRight className="text-sm sm:text-lg" />
-          </motion.button>
         </motion.div>
       </motion.div>
     </div>

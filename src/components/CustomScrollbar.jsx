@@ -13,6 +13,9 @@ const CustomScrollbar = () => {
 
   // Calculate scroll metrics
   const updateScrollMetrics = useCallback(() => {
+    if (typeof document === "undefined" || typeof window === "undefined")
+      return;
+
     const documentHeight = document.documentElement.scrollHeight;
     const windowHeight = window.innerHeight;
     const currentScroll =
@@ -40,6 +43,7 @@ const CustomScrollbar = () => {
 
   // Calculate thumb position and height
   const getThumbMetrics = () => {
+    if (typeof window === "undefined") return { top: 0, height: 0 };
     const windowHeight = window.innerHeight;
     const documentHeight = scrollHeight;
     const scrollTop = scrollPosition;
@@ -104,8 +108,10 @@ const CustomScrollbar = () => {
       );
 
       // Apply scroll INSTANTLY with direct DOM manipulation
-      document.documentElement.scrollTop = newScrollTop;
-      document.body.scrollTop = newScrollTop; // For Safari compatibility
+      if (typeof document !== "undefined") {
+        document.documentElement.scrollTop = newScrollTop;
+        document.body.scrollTop = newScrollTop; // For Safari compatibility
+      }
 
       // Force immediate state update to prevent any mismatch
       setScrollPosition(newScrollTop);
@@ -114,16 +120,20 @@ const CustomScrollbar = () => {
     const handleMouseUp = (e) => {
       setIsDragging(false);
       setDragThumbPosition(null); // Clear drag position
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
+      if (typeof document !== "undefined") {
+        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseup", handleMouseUp);
+      }
 
       // Check if mouse is still near scrollbar after drag
       const currentMouseX = window.innerWidth - e.clientX;
       setIsNearScrollbar(currentMouseX <= 100);
     };
 
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
+    if (typeof document !== "undefined") {
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+    }
   };
 
   // Handle click on scrollbar track
@@ -154,8 +164,10 @@ const CustomScrollbar = () => {
       const newScrollTop = scrollRatio * maxScroll;
 
       // Instant scroll for track clicks too
-      document.documentElement.scrollTop = newScrollTop;
-      document.body.scrollTop = newScrollTop;
+      if (typeof document !== "undefined") {
+        document.documentElement.scrollTop = newScrollTop;
+        document.body.scrollTop = newScrollTop;
+      }
 
       // Force immediate state update
       setScrollPosition(newScrollTop);
@@ -166,6 +178,9 @@ const CustomScrollbar = () => {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")
+        return;
+
+      if (typeof document === "undefined" || typeof window === "undefined")
         return;
 
       switch (e.key) {
@@ -283,17 +298,22 @@ const CustomScrollbar = () => {
     window.addEventListener("resize", updateScrollMetrics);
 
     // Update on content changes
-    const observer = new MutationObserver(updateScrollMetrics);
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-    });
+    let observer;
+    if (typeof document !== "undefined") {
+      observer = new MutationObserver(updateScrollMetrics);
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+      });
+    }
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", updateScrollMetrics);
-      observer.disconnect();
+      if (observer) {
+        observer.disconnect();
+      }
     };
   }, [handleScroll, updateScrollMetrics]);
 

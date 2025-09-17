@@ -10,10 +10,11 @@ import TokenAllocation from "../components/About/TokenAllocation";
 import TeamSection from "../components/About/Team";
 
 const About = () => {
-  // Detect if user prefers reduced motion
-  const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  ).matches;
+  // Detect if user prefers reduced motion (safely)
+  const prefersReducedMotion =
+    typeof window !== "undefined"
+      ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      : false;
 
   // Optimized stagger container for faster desktop loading
   const containerVariants = {

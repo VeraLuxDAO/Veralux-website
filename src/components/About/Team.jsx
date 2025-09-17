@@ -1,12 +1,12 @@
 import React from "react";
-import micheal from "../../assets/Micheal.png";
-import flux from "../../assets/Flux.png";
+const micheal = "/assets/Micheal.png";
+const flux = "/assets/Flux.png";
 import { motion } from "framer-motion";
 import { FaTelegramPlane } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { FiArrowUpRight } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import Team from "../../assets/team.png";
+const Team = "/assets/team.png";
 import {
   staggerContainer,
   titleAnimation,

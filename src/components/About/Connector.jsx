@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
-import connectorDesktop from "../../assets/connector.png";
-import connectorMobile from "../../assets/connector-mobile.png";
+const connectorDesktop = "/assets/connector.png";
+const connectorMobile = "/assets/connector-mobile.png";
 import {
   staggerContainer,
   imageZoom,

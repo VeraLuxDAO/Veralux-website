@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
-import TokenAll from "../../assets/Groupie.png";
-import TokenAllMobile from "../../assets/mobile-token.png";
+const TokenAll = "/assets/Groupie.png";
+const TokenAllMobile = "/assets/mobile-token.png";
 import {
   titleAnimation,
   imageZoom,

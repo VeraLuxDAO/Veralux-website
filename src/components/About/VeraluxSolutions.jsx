@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import cube from "../../assets/3DCUBE.png";
+const cube = "/assets/3DCUBE.png";
 import {
   fadeInLeft,
   fadeInRight,

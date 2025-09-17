@@ -1,10 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
-import Tokenomics2 from "../../assets/TokenomicsImage.png"; // Replace with your image path
+const Tokenomics2 = "/assets/TokenomicsImage.png"; // Replace with your image path
 import FeatureCard from "./FeatureCard";
 import InfoCard from "./InfoCard";
 import TokenUtilityCard from "./TokenUtilityCard";
-import header from "../../assets/Tokenomics-header.png";
+const header = "/assets/Tokenomics-header.png";
 import {
   fadeInLeft,
   fadeInRight,

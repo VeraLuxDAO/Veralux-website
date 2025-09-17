@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import Navbar from "./Pages/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Footer from "./components/About/Footer";
@@ -42,6 +42,24 @@ const PageLoader = () => (
 );
 
 function App() {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Don't render Router during SSR to prevent document errors
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-950 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-white text-lg">Loading VeraLux...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <BrowserRouter>
       <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-950 scroll-optimized">

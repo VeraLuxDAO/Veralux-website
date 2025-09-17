@@ -1,7 +1,7 @@
 import React from "react";
 import { FaTelegramPlane, FaDiscord } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import Logo from "../../assets/logo.png";
+const Logo = "/assets/logo.png";
 
 const Footer = () => {
   return (

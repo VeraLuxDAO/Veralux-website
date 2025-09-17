@@ -1,6 +1,6 @@
 import React, { memo } from "react";
-// import backgroundimage from "../assets/Frame 24233.png";
-import backgroundimage from "../../assets/Frame 24233.png";
+// const backgroundimage = "/assets/Frame 24233.png";
+const backgroundimage = "/assets/Frame 24233.png";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 

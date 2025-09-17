@@ -1,6 +1,6 @@
 import React from "react";
 import { FaRegCopy, FaClock } from "react-icons/fa";
-import Profile from "../../assets/Profile.png";
+const Profile = "/assets/Profile.png";
 
 export default function UserProfileHeader() {
   return (

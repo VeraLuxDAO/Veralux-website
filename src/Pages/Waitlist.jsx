@@ -27,6 +27,8 @@ const Waitlist = () => {
     wallet: false,
   });
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
   const [hasJoinedDiscord, setHasJoinedDiscord] = useState(() => {
     // Check localStorage for previous Discord join state
     return localStorage.getItem("veralux_discord_joined") === "true";
@@ -76,11 +78,48 @@ const Waitlist = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (Object.values(completedSteps).every((step) => step)) {
-      setShowSuccessModal(true);
-      console.log("Waitlist submission:", formData);
+
+    // Clear any previous errors
+    setSubmitError(null);
+
+    // Check if all steps are completed
+    if (!Object.values(completedSteps).every((step) => step)) {
+      setSubmitError("Please complete all steps before submitting.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        // Success - show the modal
+        setShowSuccessModal(true);
+        console.log("Waitlist submission successful:", result.data);
+      } else {
+        // Handle API errors
+        setSubmitError(
+          result.error || "Failed to join waitlist. Please try again."
+        );
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+      setSubmitError(
+        "Network error. Please check your connection and try again."
+      );
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -455,19 +494,43 @@ const Waitlist = () => {
               )}
             </motion.div>
 
-            {/* Submit Button responsveed*/}
+            {/* Error Message */}
+            {submitError && (
+              <motion.div
+                className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 text-center"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                variants={itemVariants}
+              >
+                <p className="text-red-400 text-sm sm:text-base">
+                  {submitError}
+                </p>
+              </motion.div>
+            )}
+
+            {/* Submit Button */}
             <motion.div
               className="text-center pt-6 sm:pt-8"
               variants={itemVariants}
             >
               <button
                 type="submit"
-                disabled={!Object.values(completedSteps).every((step) => step)}
-                className="w-full sm:w-auto bg-gradient-to-r from-[#3366FF] to-[#4DF3FF] hover:from-[#2952CC] hover:to-[#3DD1E6] disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg transition-all duration-200 transform hover:scale-105 disabled:hover:scale-100"
+                disabled={
+                  !Object.values(completedSteps).every((step) => step) ||
+                  isSubmitting
+                }
+                className="w-full sm:w-auto bg-gradient-to-r from-[#3366FF] to-[#4DF3FF] hover:from-[#2952CC] hover:to-[#3DD1E6] disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg transition-all duration-200 transform hover:scale-105 disabled:hover:scale-100 flex items-center justify-center gap-2 mx-auto"
               >
-                {Object.values(completedSteps).every((step) => step)
-                  ? "Join Waitlist"
-                  : "Complete All Steps to Continue"}
+                {isSubmitting ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    Joining Waitlist...
+                  </>
+                ) : Object.values(completedSteps).every((step) => step) ? (
+                  "Join Waitlist"
+                ) : (
+                  "Complete All Steps to Continue"
+                )}
               </button>
               <p className="text-xs sm:text-sm text-gray-400 mt-3 sm:mt-4 px-4">
                 By joining, you agree to receive updates about VeraLux launches
@@ -480,6 +543,7 @@ const Waitlist = () => {
 
       {/* Success Modal - Rendered at document body level */}
       {showSuccessModal &&
+        typeof document !== "undefined" &&
         createPortal(
           <AnimatePresence>
             <motion.div

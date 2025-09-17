@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import Logo from "../assets/logo.png";
-import VectorIcon from "../assets/Vector.svg";
 import { FaDiscord, FaXTwitter, FaTelegram, FaYoutube } from "react-icons/fa6";
+
+// Using public assets path for Next.js
+const Logo = "/assets/logo.png";
+const VectorIcon = "/assets/Vector.svg";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -15,15 +17,15 @@ const Navbar = () => {
   const [activeTooltip, setActiveTooltip] = useState(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
-  // Mobile menu animation variants
+  // Mobile menu animation variants - Optimized for responsiveness
   const menuVariants = {
     hidden: {
       opacity: 0,
-      y: -50,
-      scale: 0.95,
+      y: -20,
+      scale: 0.98,
       transition: {
-        duration: 0.3,
-        ease: [0.25, 0.46, 0.45, 0.94],
+        duration: 0.15,
+        ease: [0.4, 0.0, 0.2, 1], // Material Design easing
       },
     },
     visible: {
@@ -31,20 +33,20 @@ const Navbar = () => {
       y: 0,
       scale: 1,
       transition: {
-        duration: 0.4,
-        ease: [0.25, 0.46, 0.45, 0.94],
-        staggerChildren: 0.08,
-        delayChildren: 0.1,
+        duration: 0.2,
+        ease: [0.4, 0.0, 0.2, 1],
+        staggerChildren: 0.03, // Reduced from 0.08
+        delayChildren: 0.02, // Reduced from 0.1
       },
     },
     exit: {
       opacity: 0,
-      y: -30,
-      scale: 0.98,
+      y: -15,
+      scale: 0.99,
       transition: {
-        duration: 0.25,
-        ease: [0.25, 0.46, 0.45, 0.94],
-        staggerChildren: 0.04,
+        duration: 0.15,
+        ease: [0.4, 0.0, 1, 1], // Fast exit
+        staggerChildren: 0.02,
         staggerDirection: -1,
       },
     },
@@ -53,9 +55,9 @@ const Navbar = () => {
   const menuItemVariants = {
     hidden: {
       opacity: 0,
-      x: -30,
-      y: 20,
-      scale: 0.95,
+      x: -15,
+      y: 8,
+      scale: 0.98,
     },
     visible: {
       opacity: 1,
@@ -63,18 +65,18 @@ const Navbar = () => {
       y: 0,
       scale: 1,
       transition: {
-        duration: 0.5,
-        ease: [0.25, 0.46, 0.45, 0.94],
+        duration: 0.25, // Reduced from 0.5
+        ease: [0.4, 0.0, 0.2, 1],
       },
     },
     exit: {
       opacity: 0,
-      x: -20,
-      y: 10,
-      scale: 0.95,
+      x: -10,
+      y: 5,
+      scale: 0.98,
       transition: {
-        duration: 0.2,
-        ease: [0.25, 0.46, 0.45, 0.94],
+        duration: 0.12, // Faster exit
+        ease: [0.4, 0.0, 1, 1],
       },
     },
   };
@@ -82,9 +84,9 @@ const Navbar = () => {
   const socialItemVariants = {
     hidden: {
       opacity: 0,
-      scale: 0.8,
-      y: 30,
-      rotateY: -15,
+      scale: 0.9,
+      y: 15,
+      rotateY: -8,
     },
     visible: {
       opacity: 1,
@@ -92,18 +94,18 @@ const Navbar = () => {
       y: 0,
       rotateY: 0,
       transition: {
-        duration: 0.6,
-        ease: [0.25, 0.46, 0.45, 0.94],
+        duration: 0.3, // Reduced from 0.6
+        ease: [0.4, 0.0, 0.2, 1],
       },
     },
     exit: {
       opacity: 0,
-      scale: 0.8,
-      y: 20,
-      rotateY: 15,
+      scale: 0.95,
+      y: 10,
+      rotateY: 8,
       transition: {
-        duration: 0.3,
-        ease: [0.25, 0.46, 0.45, 0.94],
+        duration: 0.15, // Faster exit
+        ease: [0.4, 0.0, 1, 1],
       },
     },
   };
@@ -114,16 +116,16 @@ const Navbar = () => {
       opacity: 1,
       scale: 1,
       transition: {
-        duration: 0.8,
+        duration: 0.4, // Reduced from 0.8
         ease: "easeOut",
-        delay: 0.3,
+        delay: 0.1, // Reduced from 0.3
       },
     },
     exit: {
       opacity: 0,
       scale: 0,
       transition: {
-        duration: 0.3,
+        duration: 0.15, // Faster exit
       },
     },
   };
@@ -218,6 +220,7 @@ const Navbar = () => {
       }
 
       // Active section detection (separate from visibility logic)
+      if (typeof document === "undefined") return;
       const sections = document.querySelectorAll("[data-section]");
 
       if (sections.length > 0) {
@@ -276,8 +279,10 @@ const Navbar = () => {
 
   const scrollToTop = () => {
     navigate("/");
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
+    if (typeof document !== "undefined") {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }
     setMenuOpen(false);
   };
 
@@ -431,17 +436,17 @@ const Navbar = () => {
           >
             <div className="w-5 h-5 flex flex-col justify-center items-center">
               <span
-                className={`block w-5 h-0.5 bg-current transition-all duration-300 ${
+                className={`block w-5 h-0.5 bg-current transition-all duration-200 ${
                   menuOpen ? "rotate-45 translate-y-0.5" : "-translate-y-1"
                 }`}
               ></span>
               <span
-                className={`block w-5 h-0.5 bg-current transition-all duration-300 ${
+                className={`block w-5 h-0.5 bg-current transition-all duration-200 ${
                   menuOpen ? "opacity-0" : "opacity-100"
                 }`}
               ></span>
               <span
-                className={`block w-5 h-0.5 bg-current transition-all duration-300 ${
+                className={`block w-5 h-0.5 bg-current transition-all duration-200 ${
                   menuOpen ? "-rotate-45 -translate-y-0.5" : "translate-y-1"
                 }`}
               ></span>
@@ -507,24 +512,24 @@ const Navbar = () => {
                     delay: 1,
                   }}
                 />
-                {/* Additional floating particles */}
-                {[...Array(6)].map((_, i) => (
+                {/* Simplified floating particles */}
+                {[...Array(3)].map((_, i) => (
                   <motion.div
                     key={i}
-                    className="absolute w-2 h-2 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full opacity-60"
+                    className="absolute w-1.5 h-1.5 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full opacity-40"
                     style={{
-                      left: `${20 + (i % 3) * 30}%`,
-                      top: `${15 + (i % 2) * 70}%`,
+                      left: `${25 + i * 35}%`,
+                      top: `${20 + (i % 2) * 60}%`,
                     }}
                     animate={{
-                      y: [-10, 10, -10],
-                      opacity: [0.3, 0.8, 0.3],
-                      scale: [0.8, 1.2, 0.8],
+                      y: [-5, 5, -5],
+                      opacity: [0.2, 0.5, 0.2],
+                      scale: [0.9, 1.1, 0.9],
                     }}
                     transition={{
-                      duration: 3 + i * 0.5,
+                      duration: 2 + i * 0.3,
                       repeat: Infinity,
-                      delay: i * 0.3,
+                      delay: i * 0.2,
                       ease: "easeInOut",
                     }}
                   />
@@ -550,11 +555,11 @@ const Navbar = () => {
                         whileHover={{
                           scale: 1.02,
                           x: 5,
-                          transition: { duration: 0.2, ease: "easeOut" },
+                          transition: { duration: 0.15, ease: "easeOut" }, // Faster hover
                         }}
                         whileTap={{
                           scale: 0.98,
-                          transition: { duration: 0.1 },
+                          transition: { duration: 0.08 }, // Faster tap
                         }}
                       >
                         <div className="flex items-center justify-between">
@@ -578,11 +583,11 @@ const Navbar = () => {
                         whileHover={{
                           scale: 1.02,
                           x: 5,
-                          transition: { duration: 0.2, ease: "easeOut" },
+                          transition: { duration: 0.15, ease: "easeOut" }, // Faster hover
                         }}
                         whileTap={{
                           scale: 0.98,
-                          transition: { duration: 0.1 },
+                          transition: { duration: 0.08 }, // Faster tap
                         }}
                       >
                         <div className="flex items-center justify-between">
@@ -632,17 +637,17 @@ const Navbar = () => {
                           }}
                           variants={socialItemVariants}
                           whileHover={{
-                            scale: 1.1,
-                            y: -5,
-                            rotateY: 5,
+                            scale: 1.08, // Slightly reduced
+                            y: -3, // Reduced movement
+                            rotateY: 3, // Reduced rotation
                             transition: {
-                              duration: 0.3,
+                              duration: 0.2, // Faster hover
                               ease: "easeOut",
                             },
                           }}
                           whileTap={{
-                            scale: 0.95,
-                            transition: { duration: 0.1 },
+                            scale: 0.96,
+                            transition: { duration: 0.08 }, // Faster tap
                           }}
                         >
                           <IconComponent

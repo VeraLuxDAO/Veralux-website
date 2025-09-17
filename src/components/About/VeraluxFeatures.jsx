@@ -1,9 +1,9 @@
 import React, { memo } from "react";
 import { motion } from "framer-motion";
-import pad from "../../assets/Pad.png";
-import social from "../../assets/SocialMedia.png";
-import market from "../../assets/market.png";
-import DevTools from "../../assets/Devtools.png";
+const pad = "/assets/Pad.png";
+const social = "/assets/SocialMedia.png";
+const market = "/assets/market.png";
+const DevTools = "/assets/Devtools.png";
 import VeraluxSolutions from "./VeraluxSolutions";
 import {
   staggerContainer,

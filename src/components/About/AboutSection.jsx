@@ -1,11 +1,11 @@
 import React, { memo } from "react";
 import { motion } from "framer-motion";
-import aboutImage from "../../assets/Frame 24430.png";
-import image2 from "../../assets/about-header.png";
-import baseImage from "../../assets/Veralux-base.png";
-import coinImage from "../../assets/Veralux-coin.png";
-import coinImageMobile from "../../assets/coin-mobile.png";
-import baseImageMobile from "../../assets/base-mobile.png";
+const aboutImage = "/assets/Frame 24430.png";
+const image2 = "/assets/about-header.png";
+const baseImage = "/assets/Veralux-base.png";
+const coinImage = "/assets/Veralux-coin.png";
+const coinImageMobile = "/assets/coin-mobile.png";
+const baseImageMobile = "/assets/base-mobile.png";
 import {
   fadeInLeft,
   fadeInRight,

@@ -1,7 +1,7 @@
 import React from "react";
 import { FaRegCopy, FaLock, FaGift } from "react-icons/fa";
 import { IoArrowForward } from "react-icons/io5";
-import copy from "../../assets/COIN.png";
+const copy = "/assets/COIN.png";
 
 export default function LuxTokenWallet() {
   const transactions = [

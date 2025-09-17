@@ -8,6 +8,8 @@
     "no-undef": "off"
   },
   "globals": {
-    "process": "readonly"
+    "process": "readonly",
+    "window": "readonly",
+    "document": "readonly"
   }
 }

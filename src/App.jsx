@@ -62,9 +62,9 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-950 scroll-optimized">
+      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-950">
         <Navbar />
-        <main className="px-30">
+        <main className="px-30 position-relative">
           <Routes>
             {/* Landing page loads immediately */}
             <Route path="/" element={<About />} />

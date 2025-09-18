@@ -11,9 +11,6 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const [isHoveringTop, setIsHoveringTop] = useState(false);
   const [activeTooltip, setActiveTooltip] = useState(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
@@ -188,95 +185,6 @@ const Navbar = () => {
     },
   ];
 
-  // Auto-hide navbar and track active section on scroll
-  useEffect(() => {
-    let timeoutId = null;
-
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const scrollPos = currentScrollY + 100;
-      const scrollDifference = Math.abs(currentScrollY - lastScrollY);
-
-      // Only process if there's significant scroll movement (reduces jitter)
-      if (scrollDifference > 5) {
-        // Auto-hide navbar logic (but keep visible if menu is open or hovering top)
-        if (!menuOpen && !isHoveringTop) {
-          if (currentScrollY > lastScrollY && currentScrollY > 150) {
-            // Scrolling down & past 150px - hide navbar with slight delay
-            if (timeoutId) clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => setIsVisible(false), 150);
-          } else if (currentScrollY < lastScrollY || currentScrollY <= 100) {
-            // Scrolling up OR near top - show navbar immediately
-            if (timeoutId) clearTimeout(timeoutId);
-            setIsVisible(true);
-          }
-        } else {
-          // Always keep navbar visible when menu is open or hovering top
-          if (timeoutId) clearTimeout(timeoutId);
-          setIsVisible(true);
-        }
-
-        setLastScrollY(currentScrollY);
-      }
-
-      // Active section detection (separate from visibility logic)
-      if (typeof document === "undefined") return;
-      const sections = document.querySelectorAll("[data-section]");
-
-      if (sections.length > 0) {
-        let currentSection = "";
-
-        sections.forEach((section) => {
-          const sectionTop = section.offsetTop;
-          const sectionHeight = section.offsetHeight;
-
-          if (
-            scrollPos >= sectionTop &&
-            scrollPos < sectionTop + sectionHeight
-          ) {
-            currentSection = section.getAttribute("data-section");
-          }
-        });
-
-        if (currentSection && currentSection !== activeSection) {
-          setActiveSection(currentSection);
-        }
-      }
-    };
-
-    // Optimized throttling with cleanup
-    let ticking = false;
-    const throttledHandleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          handleScroll();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", throttledHandleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", throttledHandleScroll);
-      if (timeoutId) clearTimeout(timeoutId);
-    };
-  }, [activeSection, lastScrollY, menuOpen, isHoveringTop]);
-
-  // Mouse move handler for top hover detection
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      const isNearTop = e.clientY <= 80; // Within 80px of top
-      if (isNearTop !== isHoveringTop) {
-        setIsHoveringTop(isNearTop);
-      }
-    };
-
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [isHoveringTop]);
-
   const scrollToTop = () => {
     navigate("/");
     if (typeof document !== "undefined") {
@@ -329,21 +237,15 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 backdrop-blur-xl text-white transition-all duration-300 ease-out transform navbar-consistent ${
-        isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-95"
-      }`}
+      className="fixed top-0 left-0 w-full z-50 text-white navbar-consistent translate-y-0 opacity-100 py-2"
       style={{
-        background: `linear-gradient(135deg, 
-          rgba(13, 13, 13, 0.95) 0%, 
-          rgba(20, 25, 40, 0.95) 50%, 
-          rgba(13, 13, 13, 0.95) 100%)`,
-        boxShadow: `0 8px 32px rgba(77, 243, 255, 0.1), 
-                    0 4px 16px rgba(51, 102, 255, 0.1)`,
+        background: "#0d0d0d", // Solid dark background
+        boxShadow: `0 2px 8px rgba(0, 0, 0, 0.3)`,
         borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-14 sm:h-16 lg:h-18">
+        <div className="flex items-center justify-between">
           {/* Left Section: Logo */}
           <div className="flex-shrink-0">
             <div onClick={scrollToTop} className="cursor-pointer group">

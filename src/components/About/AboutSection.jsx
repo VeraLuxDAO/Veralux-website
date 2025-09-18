@@ -98,7 +98,7 @@ const AboutSection = () => {
         >
           {/* Base comes FIRST (bottom layer) */}
           <motion.div
-            className="coin absolute top-[20px] sm:top-[30px] md:top-[40px] lg:top-[50px] flex -translate-x-1/2 pointer-events-none overflow-visible z-10 flex hardware-accelerated"
+            className="coin-container absolute top-[20px] sm:top-[30px] md:top-[40px] lg:top-[50px] flex"
             variants={{
               hidden: { opacity: 0, y: -50, scale: 0.8 },
               visible: {
@@ -108,44 +108,65 @@ const AboutSection = () => {
                 transition: { duration: 0.8, delay: 0.3 },
               },
             }}
+            animate={{
+              // Subtle floating motion (UX: gentle, not distracting)
+              y: [0, -6, 0],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
           >
-            <motion.img
-              src={coinImage}
-              alt="VeraLux Coin Front"
-              className="coin-face coin-front w-[200px] sm:w-[250px] md:w-[300px] lg:w-[350px] xl:w-[400px]"
-              loading="lazy"
-              decoding="async"
-              whileHover={{
-                scale: 1.05,
-                filter: "drop-shadow(0 0 30px rgba(77, 243, 255, 0.4))",
-              }}
-              transition={{ duration: 0.3 }}
-            />
-            <motion.img
-              src={coinImage}
-              alt="VeraLux Coin Back"
-              className="coin-face coin-back w-[200px] sm:w-[250px] md:w-[300px] lg:w-[350px] xl:w-[400px]"
-              loading="lazy"
-              decoding="async"
-              whileHover={{
-                scale: 1.05,
-                filter: "drop-shadow(0 0 30px rgba(77, 243, 255, 0.4))",
-              }}
-              transition={{ duration: 0.3 }}
-            />
+            {/* Anti-Flicker 3D Coin - Desktop Optimized */}
             <motion.div
-              className="shine-beam"
-              style={{ height: "80%" }}
+              className="coin-container-stable"
+              style={{
+                position: "relative",
+                transformStyle: "preserve-3d",
+                perspective: "800px",
+                perspectiveOrigin: "center center",
+              }}
               animate={{
-                opacity: [0.6, 1, 0.6],
-                scale: [1, 1.1, 1],
+                // Smooth Y-axis rotation with anti-flicker optimization
+                rotateY: [0, 360],
               }}
               transition={{
-                duration: 3,
+                duration: 6,
                 repeat: Infinity,
-                ease: "easeInOut",
+                ease: "linear",
               }}
-            />
+            >
+              {/* Single Coin Image - Always Visible Approach */}
+              <motion.img
+                src={coinImage}
+                alt="VeraLux Coin"
+                className="w-[200px] sm:w-[250px] md:w-[300px] lg:w-[350px] xl:w-[400px]"
+                loading="lazy"
+                decoding="async"
+                whileHover={{
+                  scale: 1.08,
+                  filter:
+                    "drop-shadow(0 0 35px rgba(77, 243, 255, 0.6)) brightness(1.1)",
+                  transition: {
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 20,
+                  },
+                }}
+                style={{
+                  display: "block",
+                  filter:
+                    "drop-shadow(0 6px 20px rgba(77, 243, 255, 0.25)) brightness(1.05)",
+                  borderRadius: "50%",
+                  willChange: "transform, filter",
+                  backfaceVisibility: "visible",
+                  WebkitBackfaceVisibility: "visible",
+                  transform: "translateZ(0)", // Force hardware acceleration
+                  WebkitTransform: "translateZ(0)",
+                }}
+              />
+            </motion.div>
           </motion.div>
 
           <motion.img

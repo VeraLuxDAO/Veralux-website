@@ -318,35 +318,58 @@ body {
   font-family: "Instrument Sans", sans-serif;
 }
 
-.coin {
+/* Enhanced Coin Animation Container */
+.coin-container {
   position: relative;
-  width: 250px; /* coin size */
+  will-change: transform;
+  contain: layout style;
+}
+
+/* 3D Coin Wrapper */
+.coin-3d-wrapper {
+  position: relative;
+  width: 250px;
   height: 250px;
   transform-style: preserve-3d;
-  animation: spin-thick 2s linear infinite; /* use new spin with thickness */
+  border-radius: 50%;
+  will-change: transform;
+  contain: layout;
+  perspective: 1000px;
+}
+
+/* Legacy coin class for backward compatibility */
+.coin {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  transform-style: preserve-3d;
   border-radius: 50%;
   will-change: transform;
   contain: layout;
 }
 
-/* Coin faces */
+/* Enhanced Coin faces */
 .coin-face {
   position: absolute;
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
   border-radius: 50%;
+  will-change: transform, filter;
+  contain: layout style;
 }
 
-/* Front side (image) */
+/* Front side (enhanced) */
 .coin-front {
-  transform: translateZ(0px);
+  transform: translateZ(2px);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Back side (mirrored & darker) */
+/* Back side (enhanced with better contrast) */
 .coin-back {
-  transform: rotateY(180deg) translateZ(0px);
-  filter: brightness(0.8) contrast(1.2);
+  transform: rotateY(180deg) translateZ(2px);
+  filter: brightness(0.85) contrast(1.15) saturate(1.1);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* Coin edge — now visible */
@@ -377,7 +400,8 @@ body {
   }
 }
 
-/* Shine beam projection */
+
+/* Legacy shine beam for compatibility */
 .shine-beam {
   position: absolute;
   bottom: 0;
@@ -435,8 +459,50 @@ body {
   }
 }
 
+/* Floating animation for base platform */
+@keyframes smooth-float {
+  0%,
+  100% {
+    transform: translateY(0px) rotateZ(0deg);
+  }
+  33% {
+    transform: translateY(-6px) rotateZ(0.5deg);
+  }
+  66% {
+    transform: translateY(-3px) rotateZ(-0.5deg);
+  }
+}
+
+.animate-float {
+  animation: smooth-float 3s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes float-coin {
+  0%,
+  100% {
+    transform: translateY(0px) rotateZ(0deg);
+  }
+  33% {
+    transform: translateY(-16px) rotateZ(0.5deg);
+  }
+  66% {
+    transform: translateY(-9px) rotateZ(-0.5deg);
+  }
+}
+
+.animate-float-coin {
+  animation: float-coin 10s linear infinite;
+}
+
 /* Optimized shine beam */
 .shine-beam {
+  will-change: transform, opacity;
+  contain: layout style;
+}
+
+/* Enhanced coin glow effect */
+.coin-glow {
   will-change: transform, opacity;
   contain: layout style;
 }

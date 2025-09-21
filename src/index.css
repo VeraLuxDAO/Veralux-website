@@ -60,9 +60,9 @@ nav[class*="backdrop-blur"] {
 .navbar-consistent {
   background: linear-gradient(
     135deg,
-    rgba(13, 13, 13, 0.95) 0%,
-    rgba(20, 25, 40, 0.95) 50%,
-    rgba(13, 13, 13, 0.95) 100%
+    rgba(13, 13, 13, 1) 0%,
+    rgba(20, 25, 40, 1) 50%,
+    rgba(13, 13, 13, 1) 100%
   ) !important;
   box-shadow: 0 8px 32px rgba(77, 243, 255, 0.1),
     0 4px 16px rgba(51, 102, 255, 0.1) !important;

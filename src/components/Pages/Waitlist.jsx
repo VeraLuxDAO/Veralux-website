@@ -29,14 +29,35 @@ const Waitlist = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
-  const [hasJoinedDiscord, setHasJoinedDiscord] = useState(() => {
-    // Check localStorage for previous Discord join state
-    return localStorage.getItem("veralux_discord_joined") === "true";
-  });
-  const [hasFollowedTwitter, setHasFollowedTwitter] = useState(() => {
-    // Check localStorage for previous follow state
-    return localStorage.getItem("veralux_twitter_followed") === "true";
-  });
+  const [hasJoinedDiscord, setHasJoinedDiscord] = useState(false);
+  const [hasFollowedTwitter, setHasFollowedTwitter] = useState(false);
+
+  // Reset all data when component mounts (page refresh)
+  useEffect(() => {
+    // Clear localStorage data
+    localStorage.removeItem("veralux_discord_joined");
+    localStorage.removeItem("veralux_twitter_followed");
+
+    // Reset all states to initial values
+    setCurrentStep(1);
+    setFormData({
+      discordUsername: "",
+      twitterUsername: "",
+      email: "",
+      walletAddress: "",
+    });
+    setCompletedSteps({
+      discord: false,
+      twitter: false,
+      email: false,
+      wallet: false,
+    });
+    setHasJoinedDiscord(false);
+    setHasFollowedTwitter(false);
+    setShowSuccessModal(false);
+    setIsSubmitting(false);
+    setSubmitError(null);
+  }, []); // Empty dependency array means this runs once on mount
 
   const handleDiscordClick = () => {
     window.open("https://discord.gg/gWTFWwaVbD", "_blank");

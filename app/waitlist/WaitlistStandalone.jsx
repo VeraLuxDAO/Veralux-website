@@ -1,4 +1,4 @@
-import React, { useState, memo } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { createPortal } from "react-dom";
 import {
   FaDiscord,
@@ -26,18 +26,37 @@ const WaitlistStandalone = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
-  const [hasJoinedDiscord, setHasJoinedDiscord] = useState(() => {
+  const [hasJoinedDiscord, setHasJoinedDiscord] = useState(false);
+  const [hasFollowedTwitter, setHasFollowedTwitter] = useState(false);
+
+  // Reset all data when component mounts (page refresh)
+  useEffect(() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem("veralux_discord_joined") === "true";
+      // Clear localStorage data
+      localStorage.removeItem("veralux_discord_joined");
+      localStorage.removeItem("veralux_twitter_followed");
     }
-    return false;
-  });
-  const [hasFollowedTwitter, setHasFollowedTwitter] = useState(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("veralux_twitter_followed") === "true";
-    }
-    return false;
-  });
+
+    // Reset all states to initial values
+    setCurrentStep(1);
+    setFormData({
+      discordUsername: "",
+      twitterUsername: "",
+      email: "",
+      walletAddress: "",
+    });
+    setCompletedSteps({
+      discord: false,
+      twitter: false,
+      email: false,
+      wallet: false,
+    });
+    setHasJoinedDiscord(false);
+    setHasFollowedTwitter(false);
+    setShowSuccessModal(false);
+    setIsSubmitting(false);
+    setSubmitError(null);
+  }, []); // Empty dependency array means this runs once on mount
 
   const handleDiscordClick = () => {
     window.open("https://discord.gg/gWTFWwaVbD", "_blank");

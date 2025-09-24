@@ -331,13 +331,13 @@ const Navbar = () => {
                       href={link.href}
                       className={`relative px-2 sm:px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg font-medium text-xs sm:text-sm transition-all duration-300 group whitespace-nowrap ${
                         activeSection === link.section
-                          ? "text-[#6EF8FF] bg-gradient-to-r from-[#6EF8FF]/20 to-[#6EF8FF]/10 border border-[#6EF8FF]/30 shadow-lg shadow-[#6EF8FF]/20"
-                          : "text-[#6EF8FF] hover:text-white hover:bg-[#6EF8FF]/10 hover:backdrop-blur-sm"
+                          ? "text-[#48d8ff]  border border-[#48d8ff]/30 shadow-lg shadow-[#48d8ff]/20"
+                          : "text-[#48d8ff] hover:text-white hover:bg-[#48d8ff]/10 hover:backdrop-blur-sm"
                       }`}
                     >
                       <span className="relative z-10">{link.name}</span>
                       {/* Hover effect */}
-                      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-[#6EF8FF]/10 to-[#6EF8FF]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-[#48d8ff]/10 to-[#48d8ff]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </a>
                   )}
                 </div>

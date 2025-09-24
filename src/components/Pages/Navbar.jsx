@@ -11,6 +11,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const [activeTooltip, setActiveTooltip] = useState(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
@@ -136,6 +138,50 @@ const Navbar = () => {
     }
   }, []);
 
+  // Auto-hide navbar on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const scrollDifference = Math.abs(currentScrollY - lastScrollY);
+
+      // Only process if there's significant scroll movement (reduces jitter)
+      if (scrollDifference > 5) {
+        if (!menuOpen) {
+          if (currentScrollY > lastScrollY && currentScrollY > 100) {
+            // Scrolling down & past 100px - hide navbar
+            setIsVisible(false);
+          } else if (currentScrollY < lastScrollY || currentScrollY <= 50) {
+            // Scrolling up OR near top - show navbar
+            setIsVisible(true);
+          }
+        } else {
+          // Always keep navbar visible when menu is open
+          setIsVisible(true);
+        }
+
+        setLastScrollY(currentScrollY);
+      }
+    };
+
+    // Throttled scroll handler for better performance
+    let ticking = false;
+    const throttledHandleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", throttledHandleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", throttledHandleScroll);
+    };
+  }, [lastScrollY, menuOpen]);
+
   const navLinks = [
     { name: "About Us", href: "/", section: "about", disabled: false },
     { name: "Stake", href: "/stake", section: "stake", disabled: true },
@@ -237,11 +283,12 @@ const Navbar = () => {
 
   return (
     <nav
-      className="fixed top-0 left-0 w-full z-50 text-white navbar-consistent translate-y-0 opacity-100 py-2"
+      className={`fixed top-0 left-0 w-full z-50 navbar-consistent transition-all duration-300 ease-out transform py-2 ${
+        isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
+      }`}
       style={{
-        background: "#0d0d0d", // Solid dark background
-        boxShadow: `0 2px 8px rgba(0, 0, 0, 0.3)`,
-        borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+        background: "transparent", // Fully transparent
+        borderBottom: "1px solid rgba(110, 248, 255, 0.1)", // Electric blue border
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -275,7 +322,7 @@ const Navbar = () => {
                       onClick={(e) => handleTooltipShow(link.name, e)}
                       onMouseEnter={(e) => handleTooltipShow(link.name, e)}
                       onMouseLeave={handleTooltipHide}
-                      className="relative px-2 sm:px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg font-medium text-xs sm:text-sm transition-all duration-300 group whitespace-nowrap text-gray-500 hover:text-gray-400 cursor-pointer"
+                      className="relative px-2 sm:px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg font-medium text-xs sm:text-sm transition-all duration-300 group whitespace-nowrap text-[#6EF8FF]/60 hover:text-[#6EF8FF]/80 cursor-pointer"
                     >
                       <span className="relative z-10">{link.name}</span>
                     </button>
@@ -284,13 +331,13 @@ const Navbar = () => {
                       href={link.href}
                       className={`relative px-2 sm:px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg font-medium text-xs sm:text-sm transition-all duration-300 group whitespace-nowrap ${
                         activeSection === link.section
-                          ? "text-white bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-blue-400/30 shadow-lg shadow-blue-500/20"
-                          : "text-gray-300 hover:text-white hover:bg-white/5 hover:backdrop-blur-sm"
+                          ? "text-[#6EF8FF] bg-gradient-to-r from-[#6EF8FF]/20 to-[#6EF8FF]/10 border border-[#6EF8FF]/30 shadow-lg shadow-[#6EF8FF]/20"
+                          : "text-[#6EF8FF] hover:text-white hover:bg-[#6EF8FF]/10 hover:backdrop-blur-sm"
                       }`}
                     >
                       <span className="relative z-10">{link.name}</span>
                       {/* Hover effect */}
-                      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500/10 to-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-[#6EF8FF]/10 to-[#6EF8FF]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </a>
                   )}
                 </div>
@@ -332,7 +379,7 @@ const Navbar = () => {
 
           {/* Mobile Menu Button - Enhanced */}
           <button
-            className="md:hidden relative p-2.5 rounded-xl text-white transition-all duration-300 hover:bg-white/10 group"
+            className="md:hidden relative p-2.5 rounded-xl text-[#6EF8FF] transition-all duration-300 hover:bg-[#6EF8FF]/10 group"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle mobile menu"
           >

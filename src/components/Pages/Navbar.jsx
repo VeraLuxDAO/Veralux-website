@@ -322,7 +322,7 @@ const Navbar = () => {
                       onClick={(e) => handleTooltipShow(link.name, e)}
                       onMouseEnter={(e) => handleTooltipShow(link.name, e)}
                       onMouseLeave={handleTooltipHide}
-                      className="relative px-2 sm:px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg font-medium text-xs sm:text-sm transition-all duration-300 group whitespace-nowrap text-[#6EF8FF]/60 hover:text-[#6EF8FF]/80 cursor-pointer"
+                      className="relative px-2 sm:px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg font-medium text-xs sm:text-sm transition-all duration-300 group whitespace-nowrap text-[#48d8ff]/100"
                     >
                       <span className="relative z-10">{link.name}</span>
                     </button>

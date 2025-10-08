@@ -513,7 +513,7 @@ const Waitlist = () => {
                 <FaWallet className="text-2xl text-green-400" />
                 <div>
                   <h3 className="text-xl font-semibold">
-                    Step 4: Wallet Address
+                    Step 4: SUI Wallet Address
                   </h3>
                   <p className="text-gray-400">
                     For early token/NFT drops and rewards

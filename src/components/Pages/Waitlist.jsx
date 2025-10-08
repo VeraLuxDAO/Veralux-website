@@ -534,7 +534,6 @@ const Waitlist = () => {
               )}
             </motion.div>
 
-            {/* Error Message */}
             {submitError && (
               <motion.div
                 className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 text-center"

@@ -31,6 +31,7 @@ const Waitlist = () => {
   const [submitError, setSubmitError] = useState(null);
   const [hasJoinedDiscord, setHasJoinedDiscord] = useState(false);
   const [hasFollowedTwitter, setHasFollowedTwitter] = useState(false);
+  const [walletCreationMode, setWalletCreationMode] = useState(null); // null, 'existing', 'create'
 
   // Reset all data when component mounts (page refresh)
   useEffect(() => {
@@ -54,6 +55,7 @@ const Waitlist = () => {
     });
     setHasJoinedDiscord(false);
     setHasFollowedTwitter(false);
+    setWalletCreationMode(null);
     setShowSuccessModal(false);
     setIsSubmitting(false);
     setSubmitError(null);
@@ -71,6 +73,14 @@ const Waitlist = () => {
     // Mark that user has clicked to follow and save to localStorage
     setHasFollowedTwitter(true);
     localStorage.setItem("veralux_twitter_followed", "true");
+  };
+
+  const handleWalletModeSelect = (mode) => {
+    setWalletCreationMode(mode);
+    if (mode === "create") {
+      // Auto-complete the wallet step when user chooses to create
+      setCompletedSteps((prev) => ({ ...prev, wallet: true }));
+    }
   };
 
   const handleContinue = () => {
@@ -130,6 +140,17 @@ const Waitlist = () => {
       return;
     }
 
+    // Special handling for wallet creation mode
+    if (walletCreationMode === "create" && !formData.walletAddress) {
+      // For wallet creation mode, we don't require the address to be filled
+      // The step is considered complete when user chooses to create
+    } else if (walletCreationMode === "existing" && !formData.walletAddress) {
+      setSubmitError(
+        "Please enter your wallet address or choose to create a new wallet."
+      );
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -138,7 +159,10 @@ const Waitlist = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          walletCreationMode: walletCreationMode,
+        }),
       });
 
       const result = await response.json();
@@ -520,17 +544,219 @@ const Waitlist = () => {
                   </p>
                 </div>
               </div>
+
               {isStepAccessible(4) && (
-                <input
-                  type="text"
-                  placeholder="Enter your wallet address"
-                  value={formData.walletAddress}
-                  onChange={(e) =>
-                    handleInputChange("walletAddress", e.target.value)
-                  }
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:border-blue-500 focus:outline-none transition-colors duration-200"
-                  required
-                />
+                <div className="space-y-4">
+                  {/* Wallet Mode Selection */}
+                  {walletCreationMode === null && (
+                    <motion.div
+                      className="space-y-3"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <p className="text-sm text-gray-300 mb-4">
+                        Do you already have a SUI wallet?
+                      </p>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <motion.button
+                          type="button"
+                          onClick={() => handleWalletModeSelect("existing")}
+                          className="p-4 bg-gray-800 border border-gray-600 rounded-lg hover:border-blue-500 hover:bg-blue-500/10 transition-all duration-200 text-left group"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <div className="flex items-center space-x-3">
+                            <div className="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center">
+                              <FaWallet className="w-4 h-4 text-green-400" />
+                            </div>
+                            <div>
+                              <h4 className="font-medium text-white group-hover:text-blue-300">
+                                I have a SUI wallet
+                              </h4>
+                              <p className="text-xs text-gray-400">
+                                Enter your existing wallet address
+                              </p>
+                            </div>
+                          </div>
+                        </motion.button>
+
+                        <motion.button
+                          type="button"
+                          onClick={() => handleWalletModeSelect("create")}
+                          className="p-4 bg-gray-800 border border-gray-600 rounded-lg hover:border-cyan-500 hover:bg-cyan-500/10 transition-all duration-200 text-left group"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <div className="flex items-center space-x-3">
+                            <div className="w-8 h-8 bg-cyan-500/20 rounded-full flex items-center justify-center">
+                              <svg
+                                className="w-4 h-4 text-cyan-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                />
+                              </svg>
+                            </div>
+                            <div>
+                              <h4 className="font-medium text-white group-hover:text-cyan-300">
+                                Create a new wallet
+                              </h4>
+                              <p className="text-xs text-gray-400">
+                                We'll guide you through setup
+                              </p>
+                            </div>
+                          </div>
+                        </motion.button>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* Existing Wallet Input */}
+                  {walletCreationMode === "existing" && (
+                    <motion.div
+                      className="space-y-3"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <FaCheck className="w-4 h-4 text-green-400" />
+                          <span className="text-sm text-green-400">
+                            Enter your existing SUI wallet address
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setWalletCreationMode(null)}
+                          className="text-xs text-gray-400 hover:text-white underline"
+                          title="Change wallet option"
+                        >
+                          Change
+                        </button>
+                      </div>
+
+                      <input
+                        type="text"
+                        placeholder="Enter your SUI wallet address (0x...)"
+                        value={formData.walletAddress}
+                        onChange={(e) =>
+                          handleInputChange("walletAddress", e.target.value)
+                        }
+                        className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:border-blue-500 focus:outline-none transition-colors duration-200"
+                        required
+                        autoFocus
+                      />
+                    </motion.div>
+                  )}
+
+                  {/* Wallet Creation Guide */}
+                  {walletCreationMode === "create" && (
+                    <motion.div
+                      className="space-y-4"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <FaCheck className="w-4 h-4 text-cyan-400" />
+                          <span className="text-sm text-cyan-400">
+                            Great! We'll help you create a SUI wallet
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setWalletCreationMode(null)}
+                          className="text-xs text-gray-400 hover:text-white underline"
+                          title="Change wallet option"
+                        >
+                          Change
+                        </button>
+                      </div>
+
+                      <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-lg p-4">
+                        <h4 className="font-medium text-cyan-300 mb-3">
+                          🚀 Create Your SUI Wallet
+                        </h4>
+                        <div className="space-y-3 text-sm text-gray-300">
+                          <div className="flex items-start space-x-3">
+                            <span className="flex-shrink-0 w-6 h-6 bg-cyan-500/20 rounded-full flex items-center justify-center text-xs font-bold text-cyan-400">
+                              1
+                            </span>
+                            <div>
+                              <p className="font-medium">Download Sui Wallet</p>
+                              <p className="text-gray-400">
+                                Get the official Sui Wallet browser extension
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-start space-x-3">
+                            <span className="flex-shrink-0 w-6 h-6 bg-cyan-500/20 rounded-full flex items-center justify-center text-xs font-bold text-cyan-400">
+                              2
+                            </span>
+                            <div>
+                              <p className="font-medium">Create New Wallet</p>
+                              <p className="text-gray-400">
+                                Follow the setup wizard to create your wallet
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-start space-x-3">
+                            <span className="flex-shrink-0 w-6 h-6 bg-cyan-500/20 rounded-full flex items-center justify-center text-xs font-bold text-cyan-400">
+                              3
+                            </span>
+                            <div>
+                              <p className="font-medium">Copy Your Address</p>
+                              <p className="text-gray-400">
+                                Copy your wallet address and return here
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="mt-4 pt-4 border-t border-cyan-500/20">
+                          <motion.button
+                            type="button"
+                            onClick={() =>
+                              window.open(
+                                "https://chrome.google.com/webstore/detail/sui-wallet/opcgpfmipidbgpenhmajoajpbobppdil",
+                                "_blank"
+                              )
+                            }
+                            className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2"
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                          >
+                            <svg
+                              className="w-5 h-5"
+                              fill="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                            </svg>
+                            <span>Download Sui Wallet</span>
+                          </motion.button>
+                        </div>
+
+                        <div className="mt-3">
+                          <p className="text-xs text-gray-400 text-center">
+                            After creating your wallet, return here and select
+                            "I have a SUI wallet" to continue
+                          </p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
               )}
             </motion.div>
 
@@ -661,6 +887,14 @@ const Waitlist = () => {
                     <span className="text-gray-400">Email:</span>
                     <span className="text-white font-medium">
                       {formData.email}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-400">Wallet:</span>
+                    <span className="text-white font-medium">
+                      {walletCreationMode === "create"
+                        ? "Will create new SUI wallet"
+                        : formData.walletAddress || "Not provided"}
                     </span>
                   </div>
                 </div>

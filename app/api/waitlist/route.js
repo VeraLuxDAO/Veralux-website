@@ -56,9 +56,10 @@ export async function POST(request) {
     const twitterUsername = sanitizeInput(body.twitterUsername);
     const email = sanitizeInput(body.email?.toLowerCase());
     const walletAddress = sanitizeInput(body.walletAddress);
+    const walletCreationMode = body.walletCreationMode;
 
     // Validate required fields
-    if (!discordUsername || !twitterUsername || !email || !walletAddress) {
+    if (!discordUsername || !twitterUsername || !email) {
       return NextResponse.json(
         {
           success: false,
@@ -71,12 +72,26 @@ export async function POST(request) {
               ? "Twitter username is required"
               : null,
             email: !email ? "Email is required" : null,
-            walletAddress: !walletAddress ? "Wallet address is required" : null,
+            walletAddress: null, // We'll handle this separately
           },
         },
         { status: 400 }
       );
     }
+
+    // Handle wallet address validation based on creation mode
+    if (walletCreationMode === "existing" && !walletAddress) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Wallet address is required when using existing wallet",
+        },
+        { status: 400 }
+      );
+    }
+
+    // For wallet creation mode, we can proceed without a wallet address
+    // The user will create their wallet later
 
     // Validate email format
     if (!validateEmail(email)) {
@@ -89,8 +104,8 @@ export async function POST(request) {
       );
     }
 
-    // Validate wallet address format
-    if (!validateWalletAddress(walletAddress)) {
+    // Validate wallet address format (only if provided)
+    if (walletAddress && !validateWalletAddress(walletAddress)) {
       return NextResponse.json(
         {
           success: false,
@@ -138,7 +153,8 @@ export async function POST(request) {
       discordUsername,
       twitterUsername,
       email,
-      walletAddress,
+      walletAddress: walletAddress || null, // Allow null for wallet creation mode
+      walletCreationMode,
     };
 
     const result = await addToWaitlist(userData);
@@ -154,6 +170,7 @@ export async function POST(request) {
           twitterUsername: result.twitter_username,
           email: result.email,
           walletAddress: result.wallet_address,
+          walletCreationMode: result.wallet_creation_mode,
           createdAt: result.created_at,
         },
       },
